@@ -3,7 +3,7 @@ module.exports = {
       electronBuilder: {
         nodeIntegration: true,
         builderOptions: {
-          publish: ['gitlab']
+          publish: ['github']
         }
       }
     }
