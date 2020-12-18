@@ -7,34 +7,37 @@
             Data Center
         </header>
        
-       <ul id="accordion" class="accordion">
-           <li>
-               <div class="link"><i class="fas fa-boxes"></i>Inventarios <i class="fa fa-chevron-down"></i></div>
-               <ul class="submenu">
-                   <li><a href="#" @click="setmodulo('inventario-sistemas')">Registros</a></li>
-                   <!-- <li ><a href="#" @click="setmodulo('configuracion')">Configuración</a></li> -->
-                   <!-- <li><a href="#">Macbook Air</a></li> -->
-               </ul>
-           </li>
-           <li>
-               <div class="link"><i class="fas fa-file-alt"></i>Reportes <i class="fa fa-chevron-down"></i></div>
-               <ul class="submenu">
-                   <li><a href="#" @click="setmodulo('reporte-ingresos')">Kardex</a></li>
-                   <!-- <li ><a href="#" @click="setmodulo('configuracion')">Configuración</a></li> -->
-                   <!-- <li><a href="#">Macbook Air</a></li> -->
-               </ul>
-           </li>
-           <!-- <li>
-               <div class="link"><i class="fas fa-file-alt"></i>Orden de trabajo <i class="fa fa-chevron-down"></i></div>
-               <ul class="submenu">
-                   <li><a href="#" @click="setmodulo('odt')">ODT</a></li>
-                   <li><a href="#" @click="setmodulo('configodt')">Configuración</a></li>
-               </ul>
-           </li> -->
-           <li>
-               <div class="link" @click="salir"><i class="fas fa-sign-out-alt"></i>Salir</div>
-           </li>
-       </ul>
+        <ul id="accordion" class="accordion">
+            <li>
+                <div class="link"><i class="fas fa-boxes"></i>Inventarios <i class="fa fa-chevron-down"></i></div>
+                <ul class="submenu">
+                    <li><a href="#" @click="setmodulo('inventario-sistemas')">Registros</a></li>
+                    <!-- <li ><a href="#" @click="setmodulo('configuracion')">Configuración</a></li> -->
+                    <!-- <li><a href="#">Macbook Air</a></li> -->
+                </ul>
+            </li>
+            <li>
+                <div class="link"><i class="fas fa-file-alt"></i>Reportes <i class="fa fa-chevron-down"></i></div>
+                <ul class="submenu">
+                    <li><a href="#" @click="setmodulo('reporte-ingresos')">Kardex</a></li>
+                    <!-- <li ><a href="#" @click="setmodulo('configuracion')">Configuración</a></li> -->
+                    <!-- <li><a href="#">Macbook Air</a></li> -->
+                </ul>
+            </li>
+            <!-- <li>
+                <div class="link"><i class="fas fa-file-alt"></i>Orden de trabajo <i class="fa fa-chevron-down"></i></div>
+                <ul class="submenu">
+                    <li><a href="#" @click="setmodulo('odt')">ODT</a></li>
+                    <li><a href="#" @click="setmodulo('configodt')">Configuración</a></li>
+                </ul>
+            </li> -->
+            <li>
+                <div class="link" @click="salir"><i class="fas fa-sign-out-alt"></i>Salir</div>
+            </li>
+        </ul>
+        <div class="version">
+            v1.0.2
+        </div>
     </div>
 </template>
 
@@ -244,5 +247,13 @@ export default {
     .submenu a:hover {
         background: #b63b4d;
         color: #FFF
+    }
+
+    .version{
+        color: white;
+        text-align: center;
+        position: absolute;
+        bottom: 2px;
+        left: 4px;
     }
 </style>
