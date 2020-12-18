@@ -36,7 +36,7 @@
             </li>
         </ul>
         <div class="version">
-            v1.0.2
+            v{{version}}
         </div>
     </div>
 </template>
@@ -48,6 +48,9 @@ import { IP, PUERTO } from '@/config/parametros'
 import { mapState } from 'vuex'
 import { pregunta } from '../functions/alertas'
 
+import { ipcRenderer } from 'electron'
+window.ipcRenderer = ipcRenderer
+
 const $ = require('jquery')
 window.$ = $
 
@@ -55,7 +58,7 @@ export default {
     name: "Menu",
     data() {
         return {
-           
+            version: ''
         }
     },
     computed: {
@@ -74,12 +77,14 @@ export default {
                     this.$router.replace('Login')
                 }
             })
+        },
+        getversion(){
+            ipcRenderer.send('app_version');
 
-
-
-
-
-            
+            ipcRenderer.on('app_version', (event, arg) => {
+                ipcRenderer.removeAllListeners('app_version');
+                this.version = arg.version
+            });
         }
     },
     mounted() {
@@ -110,6 +115,8 @@ export default {
 
             var accordion = new Accordion($('#accordion'), false);
         });
+
+        this.getversion()
     },
 }
 
