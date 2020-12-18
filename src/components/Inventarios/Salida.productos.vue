@@ -1,0 +1,221 @@
+<template>
+    <b-container fluid>
+        <b-row>
+             <b-col sm="12">
+                <label>Quién solicita?</label>
+                <b-form-input type="text" id="incodigo" v-model="persona" required size="sm"></b-form-input>
+            </b-col>
+            <b-col sm="12" md="6" class="mt-3">
+                <label>Código</label>
+                <b-form-input type="text" id="xcodigo" v-model="codigo" required size="sm" autocomplete="off" @keydown.113="abrirModalBusqueda" placeholder="F2 para buscar"></b-form-input>
+            </b-col>
+            <b-col sm="12" md="3" class="mt-3">
+                <label>Cantidad</label>
+                <b-form-input type="number" id="cantidad_" v-model="cantidad" required size="sm"></b-form-input>
+            </b-col>
+            <b-col sm="12" md="3" class="mt-3">
+                <label>Bodega</label>
+                <select class="form-control form-control-sm" required v-model="entidad">
+                    <option value="">Selecciona</option>
+                    <option value="iglesia">Iglesia</option>
+                    <option value="oficina">Oficina</option>
+                </select>
+            </b-col>
+            <b-col sm="12" md="10" class="mt-4">
+
+                <b-form-input type="text" v-model="destino" required size="sm" placeholder="Destino"></b-form-input>
+            </b-col>
+            <b-col sm="12" md="2" class="mt-4">
+                <b-button type="button" size="sm" block variant="success" @click="obtenerProucto">Agregar</b-button>
+            </b-col>
+
+            <b-col sm="12" class="mt-5">
+                <table class="table table-sm table-striped table-bordered table-hover table_">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">
+                                Código
+                            </th>
+                            <th style="width: 55%;">
+                                Nombre
+                            </th>
+                            <th style="width: 10%;">
+                                Cantidad
+                            </th>
+                            <th style="width: 10%;">
+                                Entidad
+                            </th>
+                            <th style="width: 10%;">
+                                ...
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in carrito" :key="index">
+                            <td>
+                                {{item.codigo}}
+                            </td>
+                            <td>
+                                {{item.nombre}}
+                            </td>
+                            <td>
+                                {{item.cantidad}}
+                            </td>
+                            <td>
+                                {{item.entidad}}
+                            </td>
+                            <td class="d-flex align-content-center">
+                                <b-button type="button" size="sm" variant="danger" @click="borrarElemento(index)" ><i class="fas fa-trash"></i></b-button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </b-col>
+
+            <b-col sm="12" cla="mt-3">
+                <b-button @click="guardarDatos">OK!</b-button>
+            </b-col>
+        </b-row>
+
+        <buscarProducto v-if="modalB" v-on:cerrarmodal="cerrarModalB" v-on:IDP="pegarid" />
+
+
+    </b-container>
+</template>
+
+<script>
+
+import axios from 'axios'
+import {IP, PUERTO} from '@/config/parametros'
+import moment from 'moment'
+import { minix } from '@/components/functions/alertas'
+import buscarProducto from './Ingreso.modal.productos'
+import { mapActions } from 'vuex'
+
+
+export default {
+    name: "Salida",
+    components:{
+        buscarProducto
+    },
+    data() {
+        return {
+            modalB: false,
+
+            carrito: [],
+            existencias: '',
+            codigo: '',
+            cantidad: '',
+            entidad: '',
+            movimento: 'salida',
+            fecha: moment(Date.now()).format('YYYY-MM-DD'),
+            persona: '',
+            destino: ''
+        }
+    },
+    methods: {
+        async obtenerProucto(){
+
+            if (this.codigo == '' || this.cantidad == '' || this.entidad == '') {
+                minix({icon: 'error', mensaje: 'Uno o mas campos están vacios', tiempo: 3000})
+            }else{
+
+                let articulo = await axios.get(`http://${IP}:${PUERTO}/api/productos/${this.codigo}`, this.$store.state.token)
+
+                if (this.entidad == 'iglesia') {
+
+                    if (parseInt(articulo.data.existencia_iglesia) < parseInt(this.cantidad)) {
+
+                        minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
+                        document.getElementById('cantidad_').focus()
+
+                    }else{
+                        let datos = {
+                            codigo: articulo.data.codigo,
+                            nombre: articulo.data.nombre,
+                            cantidad: this.cantidad,
+                            entidad: this.entidad,
+                            fecha: this.fecha,
+                            destino: this.destino
+                        }
+            
+                        this.carrito.unshift(datos)
+                        this.codigo = ''
+                        this.cantidad = ''
+                        this.entidad = ''
+                        
+            
+                        document.getElementById('xcodigo').focus()
+                    }
+                }else if(this.entidad == 'oficina'){
+
+                    if (parseInt(articulo.data.existencia_oficina) < parseInt(this.cantidad)) {
+
+                        minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
+                        document.getElementById('cantidad_').focus()
+
+                    }else{
+                        let datos = {
+                            codigo: articulo.data.codigo,
+                            nombre: articulo.data.nombre,
+                            cantidad: this.cantidad,
+                            entidad: this.entidad,
+                            fecha: this.fecha,
+                            destino: this.destino
+                        }
+            
+                        this.carrito.unshift(datos)
+                        this.codigo = ''
+                        this.cantidad = ''
+                        this.entidad = ''
+                        
+            
+                        document.getElementById('xcodigo').focus()
+                    }
+                }
+    
+                
+            }
+
+        },
+        async guardarDatos(){
+            let data = {
+                solicitante: this.persona,
+                carrito: this.carrito
+            }
+
+            let datos = await axios.post(`http://${IP}:${PUERTO}/api/movimientos/s`, data, this.$store.state.token)
+            await this.wse(this.$store.state.rutas.inventario_productos)
+
+            minix({icon: 'success', mensaje: datos.data.message, tiempo: 3000})
+        },
+        // async validarExistencias(){
+        //     let articulo = await axios.get(`http://${IP}:${PUERTO}/api/productos/${this.codigo}`, this.$store.state.token)
+        //     this.existencias = articulo.data
+        // },
+        borrarElemento(el){
+            this.carrito.splice(el,1)   
+        },
+        abrirModalBusqueda(){
+            this.modalB = true
+        },
+        cerrarModalB(){
+            this.modalB = false
+            document.getElementById('xcodigo').focus()
+        },
+        pegarid(id){
+            this.codigo = id
+        },
+        ...mapActions(['wse'])
+    },
+    mounted() {
+        document.getElementById('incodigo').focus()
+    },
+}
+</script>
+
+<style>
+    .table_{
+        font-size: 13px;
+    }
+</style>
