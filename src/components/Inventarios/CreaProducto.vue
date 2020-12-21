@@ -11,7 +11,7 @@
                 <b-form-input v-model="nombre" type="text" size="sm"></b-form-input>
             </b-col>
 
-            <b-col sm="12" md="3" class="mt-3" >
+            <b-col sm="12" md="4" class="mt-3" >
                 <label>Bodega</label>
                 <select class="form-control form-control-sm" required v-model="lugar">
                     <option value="">Seleccciona</option>
@@ -21,20 +21,20 @@
             </b-col>
 
 
-            <b-col sm="12" md="3" class="mt-3" >
+            <!-- <b-col sm="12" md="3" class="mt-3" >
                 <label>Ubicación</label>
                 <select class="form-control form-control-sm" required v-model="ubicacion">
                     <option value="">Seleccciona</option>
                     <option v-for="(item, index) in inventario_ubicaciones" :key="index" :value="item.ubicacion">{{item.ubicacion}}</option>
                 </select>
-            </b-col>
+            </b-col> -->
 
             <!-- <b-col sm="12" md="3" class="mt-3">
                 <label>Precio de compra</label>
                 <b-form-input type="number" placeholder="Q." v-model="precio" step="0.01" size="sm"></b-form-input>
             </b-col> -->
 
-            <b-col sm="12" md="3" class="mt-3">
+            <b-col sm="12" md="4" class="mt-3">
                 <label>Categoría</label>
                 <select class="form-control form-control-sm" v-model="categoria">
                     <option value="">Selecciona</option>
@@ -42,7 +42,7 @@
                 </select>
             </b-col>
 
-            <b-col sm="12" md="3" class="mt-3">
+            <b-col sm="12" md="4" class="mt-3">
                 <label>Medida</label>
                 <select class="form-control form-control-sm" v-model="medida">
                     <option value="">Selecciona</option>
@@ -97,7 +97,7 @@ export default {
             categoria: '',
             medida: '',
             lugar: '',
-            ubicacion: '',
+            ubicacion: 'n/a',
             observaciones: '',
             modal_settings: false
         }
