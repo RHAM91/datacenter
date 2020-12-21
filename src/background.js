@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
 import {
   createProtocol,
   installVueDevtools
@@ -17,11 +17,32 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
+
+function buscarActualizacion(){
+    autoUpdater.checkForUpdates()
+    autoUpdater.on('update-downloaded', () => {
+     
+      const dialogOpts = {
+        type: 'info',
+        buttons: ['Actualizar', 'Después'],
+        title: 'Actualización disponible',
+        message: `NUEVA VERSION DISPONIBLE`,
+        detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
+      }
+
+      dialog.showMessageBox(dialogOpts).then(({ response }) => {
+        if (response === 0) autoUpdater.quitAndInstall()
+      })
+    })
+}
+
 function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1240,
+    height: 850,
+    center: true,
+    autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true
     }
@@ -35,9 +56,33 @@ function createWindow() {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
-    autoUpdater.checkForUpdatesAndNotify()
+    //autoUpdater.checkForUpdatesAndNotify()
     //autoUpdater.checkForUpdates()
+    buscarActualizacion()
   }
+
+  let actualizacion = setInterval(() => {
+    autoUpdater.checkForUpdates()
+    autoUpdater.on('update-downloaded', () => {
+     
+
+      const dialogOpts = {
+        type: 'info',
+        buttons: ['Actualizar', 'Después'],
+        title: 'Actualización disponible',
+        message: `NUEVA VERSION DISPONIBLE`,
+        detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
+      }
+
+      dialog.showMessageBox(dialogOpts).then(({ response }) => {
+        if (response === 0) {
+          autoUpdater.quitAndInstall()
+        }else{
+          clearInterval(actualizacion)
+        }
+      })
+    })
+  }, 1 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
 
   win.on('closed', () => {
     win = null
