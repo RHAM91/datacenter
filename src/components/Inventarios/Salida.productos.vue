@@ -72,8 +72,8 @@
                 </table>
             </b-col>
 
-            <b-col sm="12" cla="mt-3">
-                <b-button @click="guardarDatos">OK!</b-button>
+            <b-col sm="12" class="mt-3 d-flex flex-row-reverse">
+                <b-button type="button" size="sm" variant="primary" @click="guardarDatos">Generar salida</b-button>
             </b-col>
         </b-row>
 
@@ -122,72 +122,93 @@ export default {
 
                 let articulo = await axios.get(`http://${IP}:${PUERTO}/api/productos/${this.codigo}`, this.$store.state.token)
 
-                if (this.entidad == 'iglesia') {
+                if (articulo.data.message == "NOT FOUND") {
+                    minix({icon: 'error', mensaje: 'Este código no existe :/', tiempo: 3000})
+                    document.getElementById('xcodigo').focus()
+                }else{
+                    if (this.entidad == 'iglesia') {
 
-                    if (parseInt(articulo.data.existencia_iglesia) < parseInt(this.cantidad)) {
+                        if (parseInt(articulo.data.existencia_iglesia) < parseInt(this.cantidad)) {
 
-                        minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
-                        document.getElementById('cantidad_').focus()
+                            minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
+                            document.getElementById('cantidad_').focus()
 
-                    }else{
-                        let datos = {
-                            codigo: articulo.data.codigo,
-                            nombre: articulo.data.nombre,
-                            cantidad: this.cantidad,
-                            entidad: this.entidad,
-                            fecha: this.fecha,
-                            destino: this.destino
-                        }
-            
-                        this.carrito.unshift(datos)
-                        this.codigo = ''
-                        this.cantidad = ''
-                        this.entidad = ''
-                        
-            
-                        document.getElementById('xcodigo').focus()
-                    }
-                }else if(this.entidad == 'oficina'){
-
-                    if (parseInt(articulo.data.existencia_oficina) < parseInt(this.cantidad)) {
-
-                        minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
-                        document.getElementById('cantidad_').focus()
-
-                    }else{
-                        let datos = {
-                            codigo: articulo.data.codigo,
-                            nombre: articulo.data.nombre,
-                            cantidad: this.cantidad,
-                            entidad: this.entidad,
-                            fecha: this.fecha,
-                            destino: this.destino
-                        }
-            
-                        this.carrito.unshift(datos)
-                        this.codigo = ''
-                        this.cantidad = ''
-                        this.entidad = ''
-                        
-            
-                        document.getElementById('xcodigo').focus()
-                    }
-                }
-    
+                        }else{
+                            let datos = {
+                                codigo: articulo.data.codigo,
+                                nombre: articulo.data.nombre,
+                                cantidad: this.cantidad,
+                                entidad: this.entidad,
+                                fecha: this.fecha,
+                                destino: this.destino
+                            }
                 
+                            this.carrito.unshift(datos)
+                            this.codigo = ''
+                            this.cantidad = ''
+                            this.entidad = ''
+                            
+                
+                            document.getElementById('xcodigo').focus()
+                        }
+                    }else if(this.entidad == 'oficina'){
+
+                        if (parseInt(articulo.data.existencia_oficina) < parseInt(this.cantidad)) {
+
+                            minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
+                            document.getElementById('cantidad_').focus()
+
+                        }else{
+                            let datos = {
+                                codigo: articulo.data.codigo,
+                                nombre: articulo.data.nombre,
+                                cantidad: this.cantidad,
+                                entidad: this.entidad,
+                                fecha: this.fecha,
+                                destino: this.destino
+                            }
+                
+                            this.carrito.unshift(datos)
+                            this.codigo = ''
+                            this.cantidad = ''
+                            this.entidad = ''
+                            
+                
+                            document.getElementById('xcodigo').focus()
+                        }
+                    }
+                }   
             }
 
         },
         async guardarDatos(){
-            let data = {
-                solicitante: this.persona,
-                carrito: this.carrito
+
+            if (this.solicitante == '' || this.destino == '') {
+                minix({icon: 'error', mensaje: 'Uno o mas campos están vacios', tiempo: 3000})
+                document.getElementById('incodigo').focus()
+            }else{
+                if (this.carrito.length == 0) {
+                    minix({icon: 'error', mensaje: 'Agrega al menos 1 producto a la lista', tiempo: 4000})
+                    document.getElementById('xcodigo').focus()
+                }else{
+                    let data = {
+                        solicitante: this.persona,
+                        carrito: this.carrito
+                    }
+
+                    let datos = await axios.post(`http://${IP}:${PUERTO}/api/movimientos/s`, data, this.$store.state.token)
+                    await this.wse(this.$store.state.rutas.inventario_productos)
+
+                    minix({icon: 'success', mensaje: datos.data.message, tiempo: 3000})
+
+                    this.codigo = ''
+                    this.cantidad = ''
+                    this.entidad = ''
+                    this.destino = ''
+
+                    document.getElementById('incodigo').focus()
+                }
             }
-
-            let datos = await axios.post(`http://${IP}:${PUERTO}/api/movimientos/s`, data, this.$store.state.token)
-            await this.wse(this.$store.state.rutas.inventario_productos)
-
-            minix({icon: 'success', mensaje: datos.data.message, tiempo: 3000})
         },
         // async validarExistencias(){
         //     let articulo = await axios.get(`http://${IP}:${PUERTO}/api/productos/${this.codigo}`, this.$store.state.token)
