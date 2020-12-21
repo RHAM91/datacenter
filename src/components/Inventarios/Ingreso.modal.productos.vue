@@ -20,13 +20,19 @@
                         <table class="table table-sm table-striped tabla_">
                             <thead>
                                 <tr>
-                                    <th style="width: 20%">
+                                    <th style="width: 15%">
                                         Código
                                     </th>
-                                    <th style="width: 60%">
+                                    <th style="width: 40%">
                                         Nombre
                                     </th>
-                                    <th style="width: 20%">
+                                    <th style="width: 15%;text-align: center;">
+                                        B.Iglesia
+                                    </th>
+                                    <th style="width: 15%;text-align: center;">
+                                        B.Oficina
+                                    </th>
+                                    <th style="width: 15%;text-align: center;">
                                         ...
                                     </th>
                                 </tr>
@@ -38,6 +44,12 @@
                                     </td>
                                     <td>
                                         {{item.nombre}}
+                                    </td>
+                                    <td style="text-align: center;">
+                                       {{item.existencia_iglesia}}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        {{item.existencia_oficina}}
                                     </td>
                                     <td>
                                         <b-button type="button" size="sm" @click="seleccionarelemento(item.codigo)" variant="danger">Seleccionar</b-button>
@@ -86,7 +98,7 @@ export default {
         async buscarproducto(){
             let productos = await axios.get(`http://${IP}:${PUERTO}/api/productos/p/${this.campobusquedaproducto}`, this.$store.state.token)
             this.req_productos = productos.data
-            
+
             this.campobusquedaproducto = ''
             document.getElementById('campobusquedamodal').focus()
         },
@@ -115,7 +127,7 @@ export default {
         align-items: center;
     }
         .cuerpo_modalbusqueda{
-            width: 600px;
+            width: 700px;
             height: 500px;
             background-color: white;
 
@@ -136,6 +148,6 @@ export default {
 
         .tabla_{
             width: 100%;
-            font-size: 12px;
+            font-size: 13px;
         }
 </style>
