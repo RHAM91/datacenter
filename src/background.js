@@ -82,7 +82,7 @@ function createWindow() {
         }
       })
     })
-  }, 1 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
+  }, 60 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
 
   win.on('closed', () => {
     win = null
