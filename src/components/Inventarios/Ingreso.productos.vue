@@ -126,8 +126,16 @@ export default {
     methods: {
         async busquedaporcodigo(){
 
-            let articulo = await axios.get(`http://${IP}:${PUERTO}/api/productos/${this.codigo}`, this.$store.state.token)
-            this.producto = articulo.data
+            if (this.codigo == '') {
+                minix({icon: 'error', mensaje: 'Ingresa un código para realizar búsqueda', tiempo: 3000})
+                document.getElementById('buscarcodigo').focus()
+            }else{
+
+                let articulo = await axios.get(`http://${IP}:${PUERTO}/api/productos/${this.codigo}`, this.$store.state.token)
+                this.producto = articulo.data
+                
+            }
+
         },
         abrirModalB(){
             this.modal_b = true
@@ -160,6 +168,16 @@ export default {
 
 
             minix({icon: 'success', mensaje: movimientos.data.message, tiempo: 3000})
+
+            this.codigo = ''
+            this.movimiento = ''
+            this.medida = ''
+            this.entidad = ''
+            this.cantidad = ''
+            this.proveedor = ''
+            this.observaciones = ''
+
+            document.getElementById('buscarcodigo').focus()
 
         },
         ...mapActions(['insert_data', 'wse'])
