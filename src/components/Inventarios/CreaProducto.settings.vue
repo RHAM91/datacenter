@@ -17,6 +17,9 @@
                 <div class="btn-setting" @click="seleccionar_modulo('editaproducto')">
                     Editar producto
                 </div>
+                 <div class="btn-setting" @click="seleccionar_modulo('eliminarproducto')">
+                    Eliminar producto
+                </div>
             </div>
             <div class="formulario_settings">
                 <Categorias v-if="modulo == 'categoria'" />
@@ -26,6 +29,7 @@
                 <Ubicaciones v-if="modulo == 'ubicaciones'" />
                 <Proveedores v-if="modulo == 'proveedores'"/>
                 <EditaProducto v-if="modulo == 'editaproducto'"/>
+                <EliminarProducto v-if="modulo == 'eliminarproducto'"/>
             </div>
 
         
@@ -40,6 +44,7 @@ import Medidas from './Medidas.settings.vue'
 import Ubicaciones from './Ubicaciones.settings'
 import Proveedores from './Proveedores.settings'
 import EditaProducto from './CreaProducto.settings.editaproducto.vue'
+import EliminarProducto from './Eliminar.producto.settings.vue'
 
 export default {
     name: "CraaProducto_settings",
@@ -48,7 +53,8 @@ export default {
         Medidas,
         Ubicaciones,
         Proveedores,
-        EditaProducto
+        EditaProducto,
+        EliminarProducto
     },
     data() {
         return {
