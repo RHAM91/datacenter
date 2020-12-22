@@ -14,6 +14,9 @@
                 <div class="btn-setting" @click="seleccionar_modulo('proveedores')">
                     Proveedores
                 </div>
+                <div class="btn-setting" @click="seleccionar_modulo('editaproducto')">
+                    Editar producto
+                </div>
             </div>
             <div class="formulario_settings">
                 <Categorias v-if="modulo == 'categoria'" />
@@ -22,6 +25,7 @@
                 <Medidas v-if="modulo == 'medidas'" />
                 <Ubicaciones v-if="modulo == 'ubicaciones'" />
                 <Proveedores v-if="modulo == 'proveedores'"/>
+                <EditaProducto v-if="modulo == 'editaproducto'"/>
             </div>
 
         
@@ -35,6 +39,7 @@ import Categorias from './CreaProducto.settings.categorias.vue'
 import Medidas from './Medidas.settings.vue'
 import Ubicaciones from './Ubicaciones.settings'
 import Proveedores from './Proveedores.settings'
+import EditaProducto from './CreaProducto.settings.editaproducto.vue'
 
 export default {
     name: "CraaProducto_settings",
@@ -42,7 +47,8 @@ export default {
         Categorias,
         Medidas,
         Ubicaciones,
-        Proveedores
+        Proveedores,
+        EditaProducto
     },
     data() {
         return {
