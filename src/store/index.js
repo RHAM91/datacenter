@@ -47,6 +47,7 @@ export default new Vuex.Store({
     inventario_medidas:[],
     inventario_ubicaciones:[],
     inventario_proveedores:[],
+    inventario_pedidos: [],
 
 
     rutas: {
@@ -55,7 +56,8 @@ export default new Vuex.Store({
         inventario_productos: {api: 'productos', estado: 'set_inventario_productos'},
         inventario_medidas: {api: 'medidas', estado: 'set_inventario_medidas'},
         inventario_ubicaciones: {api: 'ubicaciones', estado: 'set_inventario_ubicaciones'},
-        inventario_proveedores: {api: 'proveedores', estado: 'set_inventario_proveedores'}
+        inventario_proveedores: {api: 'proveedores', estado: 'set_inventario_proveedores'},
+        inventario_pedidos: {api: 'pedidos', estado: 'set_inventario_pedidos'}
     },
 
     filterPacientes: {
@@ -106,6 +108,9 @@ export default new Vuex.Store({
     },
     set_inventario_proveedores(state, data){
         state.inventario_proveedores = data
+    },
+    set_inventario_pedidos(state, data){
+        state.inventario_pedidos = data
     },
 
     
@@ -249,6 +254,7 @@ export default new Vuex.Store({
             dispatch('getDatos', state.rutas.inventario_medidas)
             dispatch('getDatos', state.rutas.inventario_ubicaciones)
             dispatch('getDatos', state.rutas.inventario_proveedores)
+            dispatch('getDatos', state.rutas.inventario_pedidos)
 
             commit('set_loading', true)
         })

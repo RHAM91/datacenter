@@ -22,8 +22,8 @@
                     <b-col sm="12">
                         <b-tabs content-class="mt-3">
                             <b-tab v-if="permisos.pacientes.listar" title="Pendientes" @click="setSubModulo('pendientes')" active></b-tab>
-                            <!-- <b-tab v-if="permisos.pacientes.listar" title="Crea artículo" @click="setSubModulo('creaproducto')"></b-tab>
-                            <b-tab v-if="permisos.pacientes.listar" title="Ingreso de producto" @click="setSubModulo('ingresodeproducto')"></b-tab>
+                             <b-tab v-if="permisos.pacientes.listar" title="Registro pendientes" @click="setSubModulo('registro')"></b-tab>
+                            <!--<b-tab v-if="permisos.pacientes.listar" title="Ingreso de producto" @click="setSubModulo('ingresodeproducto')"></b-tab>
                             <b-tab v-if="permisos.pacientes.listar" title="Salida de producto" @click="setSubModulo('salidadeproducto')"></b-tab> -->
                             <!-- <b-tab title="Bloqueados" @click="setSubModulo('Bloqueados')"></b-tab> -->
                         </b-tabs>
@@ -33,11 +33,11 @@
                         <Pendientes />
                     </b-col>
 
-                    <!-- <b-col sm="12" v-if="submodulo == 'creaproducto'">
-                        <CreaProducto />
+                     <b-col sm="12" v-if="submodulo == 'registro'">
+                        <Registro />
                     </b-col>
 
-                    <b-col sm="12" v-if="submodulo == 'ingresodeproducto'">
+                   <!-- <b-col sm="12" v-if="submodulo == 'ingresodeproducto'">
                         <Ingreso />
                     </b-col>
 
@@ -55,7 +55,7 @@
 <script>
 
 import Pendientes from '@/components/Pedidos/Pendientes.vue'
-// import CreaProducto from '@/components/Inventarios/CreaProducto.vue'
+import Registro from '@/components/Pedidos/Registro.vue'
 // import Ingreso from '@/components/Inventarios/Ingreso.productos.vue'
 // import Salida from '@/components/Inventarios/Salida.productos.vue'
 
@@ -72,6 +72,7 @@ export default {
     name: "Template",
     components:{
         Pendientes,
+        Registro,
         Loading
     },
     data() {
