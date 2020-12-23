@@ -60,6 +60,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import moment from 'moment'
+
 export default {
     name: "Registro",
     computed:{
@@ -71,7 +73,7 @@ export default {
             nopedido: '',
             proveedor: '',
             descripcion: '',
-            fecha: '',
+            fecha: moment(Date.now()).format('YYYY-MM-DD'),
             articulo: ''
         }
     },
