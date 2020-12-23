@@ -22,6 +22,10 @@
                     <ReporteTabsKardex v-on:OpenMenu="ToggleMenu"/>
                 </div>
 
+                <div v-if="modulo == 'pedidos'">
+                    <PedidosTabs v-on:OpenMenu="ToggleMenu"/>
+                </div>
+
             </div> 
 
         </div>
@@ -39,6 +43,7 @@
 // MODULOS
 import InventarioTabs from '@/components/Inventarios/Tabs.vue'
 import ReporteTabsKardex from '@/components/Reportes/Kardex/Tabs.vue'
+import PedidosTabs from '@/components/Pedidos/Tabs.vue'
 
 
 //--> GIF ANIMADO PARA LAS DESCARGAS
@@ -59,7 +64,8 @@ export default {
         Menu,
         Loading,
         InventarioTabs,
-        ReporteTabsKardex
+        ReporteTabsKardex,
+        PedidosTabs
     },
     data(){
         return{
