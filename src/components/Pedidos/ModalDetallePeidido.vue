@@ -47,7 +47,7 @@
                                         {{item.fecha}}
                                     </td>
                                     <td style="text-align: center;">
-                                        <b-button type="button" variant="success" size="sm" @click="modificar(index)">ok</b-button>
+                                        <b-button type="button" variant="success" size="sm" @click="modificar(index)"><i class="far fa-thumbs-up"></i></b-button>
                                     </td>
                                 </tr>
                             </tbody>
