@@ -91,6 +91,8 @@ import moment from 'moment'
 import { minix } from '@/components/functions/alertas'
 import buscarProducto from './Ingreso.modal.productos'
 import { mapActions } from 'vuex'
+import { ipcRenderer } from 'electron'
+// window.ipcRenderer = ipcRenderer
 
 
 export default {
@@ -200,6 +202,9 @@ export default {
                     await this.wse(this.$store.state.rutas.inventario_productos)
 
                     minix({icon: 'success', mensaje: datos.data.message, tiempo: 3000})
+                    
+                    // @TODO: Definir correctamente la ruta para visualizar el archivo .pdf
+                    //await ipcRenderer.send('vale_salida', `http://${IP}:${PUERTO}/pdf/${documentopdf.data.message}`)
 
                     this.codigo = ''
                     this.cantidad = ''

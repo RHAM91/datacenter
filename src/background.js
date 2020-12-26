@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from 'electron'
 import {
   createProtocol,
   installVueDevtools
@@ -129,6 +129,11 @@ app.on('ready', async () => {
 ipcMain.on('app_version', (event)=>{
   event.sender.send('app_version', {version: app.getVersion()})
 })
+
+ipcMain.on('vale_salida', (event, args)=>{
+  shell.openExternal(args)
+})
+
 
 // ipcMain.on('restart_app', () => {
 //   autoUpdater.quitAndInstall();
