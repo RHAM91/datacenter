@@ -112,6 +112,12 @@ export default {
             await this.insert_data(data)
             await this.wse(this.$store.state.rutas.inventario_pedidos)
 
+            this.nopedido = ''
+            this.proveedor = ''
+            this.descripcion = ''
+            this.articulo = ''
+            this.productos = []
+
         },
         ...mapActions(['insert_data', 'wse'])
     },

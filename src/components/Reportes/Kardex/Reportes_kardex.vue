@@ -102,7 +102,7 @@ export default {
     },
     data() {
         return {
-            codigo: "222",
+            codigo: "",
             resultados: [],
             bodega: "",
             finicial: "",

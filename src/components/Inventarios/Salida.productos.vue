@@ -205,6 +205,7 @@ export default {
                     this.cantidad = ''
                     this.entidad = ''
                     this.destino = ''
+                    this.carrito = []
 
                     document.getElementById('incodigo').focus()
                 }
