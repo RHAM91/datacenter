@@ -47,7 +47,7 @@
                                         {{item.fecha}}
                                     </td>
                                     <td style="text-align: center;">
-                                        <b-button type="button" variant="success" size="sm">ok</b-button>
+                                        <b-button type="button" variant="success" size="sm" @click="modificar(index)">ok</b-button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import moment from 'moment'
 export default {
     name: 'Detalle',
     props:['idpedido'],
@@ -80,7 +81,7 @@ export default {
         return {
             noPedido: '',
             descripcion: '',
-            pedidos: '',
+            pedidos: [],
         }
     },
     created() {
@@ -106,9 +107,32 @@ export default {
                     this.pedidos = JSON.parse(e.articulo)
                 }
             });
-        }
+        },
+        async modificar(id){
+            let data = {
+                articulo: this.pedidos[id].articulo,
+                completo: true,
+                fecha: moment(Date.now()).format('YYYY-MM-DD')
+            }
+
+            this.pedidos.splice(id, 1, data)
+
+            let newinfo = {
+                api: 'pedidos',
+                id: this.idpedido,
+                formulario: {
+                    articulo: JSON.stringify(this.pedidos)
+                }
+            }
+
+            await this.updateData(newinfo)
+            await this.wse(this.$store.state.rutas.inventario_pedidos)
+
+        },
+        ...mapActions(['updateData','wse'])
     },
     mounted() {
+       
         this.buscarPedido()
     },
 }
