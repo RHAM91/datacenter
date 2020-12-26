@@ -71,7 +71,7 @@ export default {
         window.removeEventListener('keydown', this.doCommand)
     },
     methods: {
-         cerrar(){
+        cerrar(){
             this.$emit('cerrarModal', false)
         },
         doCommand(e){

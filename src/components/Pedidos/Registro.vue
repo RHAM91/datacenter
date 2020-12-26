@@ -85,7 +85,8 @@ export default {
             }else{
                 let data = {
                     articulo: this.articulo,
-                    completo: false
+                    completo: false,
+                    fecha: '0000-00-00'
                 }
                 this.productos.unshift(data)
                 this.articulo = ''
@@ -103,6 +104,7 @@ export default {
                     proveedor: this.proveedor,
                     descripcion: this.descripcion,
                     fecha: this.fecha,
+                    completo: false,
                     articulo: JSON.stringify(this.productos)
                 }
             }

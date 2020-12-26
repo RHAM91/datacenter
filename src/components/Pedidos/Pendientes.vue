@@ -51,24 +51,38 @@
                 </table>
             </b-col>
         </b-row>
+
+
+        <Detalle v-if="modal_detalle" :idpedido="idp" v-on:cerrarModal="cerrarModal" />
     </b-container>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Detalle from './ModalDetallePeidido.vue'
+
+
 export default {
     name: 'Pendientes',
+    components:{
+        Detalle
+    },
     computed: {
         ...mapState(['inventario_pedidos'])
     },
     data() {
         return {
-            
+            modal_detalle: false,
+            idp: ''
         }
     },
     methods: {
         detalle(id){
-            console.log(id)
+            this.idp = id
+            this.modal_detalle = true
+        },
+        cerrarModal(){
+            this.modal_detalle = false
         },
     },
     mounted() {
