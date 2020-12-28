@@ -203,8 +203,7 @@ export default {
 
                     minix({icon: 'success', mensaje: datos.data.message, tiempo: 3000})
                     
-                    // @TODO: Definir correctamente la ruta para visualizar el archivo .pdf
-                    //await ipcRenderer.send('vale_salida', `http://${IP}:${PUERTO}/pdf/${documentopdf.data.message}`)
+                    await ipcRenderer.send('vale_salida', `http://${IP}:${PUERTO}/pdf/${datos.data.message}`)
 
                     this.codigo = ''
                     this.cantidad = ''
