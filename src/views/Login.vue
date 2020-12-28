@@ -26,6 +26,13 @@
                             <b-col sm="12" class="mt-2">
                                 <b-form-input type="password" size="sm" v-model="password" placeholder="Contraseña" required=""></b-form-input>
                             </b-col>
+                            <b-col sm="12" class="mt-2">
+                                <select v-model="sistema" class="form-control form-control-sm" required>
+                                    <option value="">Selecciona sistema</option>
+                                    <option value="iglesia">Iglesia</option>
+                                    <option value="sistemas">Sistemas</option>
+                                </select>
+                            </b-col>
                             <b-col sm="12" class="mt-3">
                                 
                                 <b-button type="submit" size="small" variant="dark" block pill>Entrar</b-button>
@@ -51,7 +58,8 @@ export default {
     data(){
         return{
             usuario: '',
-            password: ''
+            password: '',
+            sistema: ''
         }
     },
     computed:{
@@ -62,7 +70,8 @@ export default {
 
             let formulario = {
                 username: this.usuario,
-                password: this.password
+                password: this.password,
+                sistema: this.sistema
             }
 
             try {
@@ -71,7 +80,7 @@ export default {
     
                 if(data.data.message == 'PASSWORD INCORRECTO'){
     
-                    minix({icon: 'error', mensaje: 'Contraseña incorrecta', tiempo: 3000})
+                    minix({icon: 'error', mensaje: 'Contraseña o sistema incorrecto', tiempo: 3000})
     
                 }else if(data.data.message == 'EL USUARIO NO EXISTE'){
     
