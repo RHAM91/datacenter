@@ -6,8 +6,8 @@
                 <b-form-input type="text" id="incodigo" v-model="persona" required size="sm"></b-form-input>
             </b-col>
             <b-col sm="12" md="6" class="mt-3">
-                <label>Código</label>
-                <b-form-input type="text" id="xcodigo" v-model="codigo" required size="sm" autocomplete="off" @keydown.113="abrirModalBusqueda" placeholder="F2 para buscar"></b-form-input>
+                <label>Destino</label>
+                <b-form-input type="text" v-model="destino" required size="sm" placeholder="Destino"></b-form-input>
             </b-col>
             <b-col sm="12" md="3" class="mt-3">
                 <label>Cantidad</label>
@@ -22,10 +22,10 @@
                 </select>
             </b-col>
             <b-col sm="12" md="10" class="mt-4">
-
-                <b-form-input type="text" v-model="destino" required size="sm" placeholder="Destino"></b-form-input>
+                <label>Código</label>
+                <b-form-input type="text" id="xcodigo" v-model="codigo" required size="sm" autocomplete="off" @keydown.113="abrirModalBusqueda" @keydown.enter="getCode" placeholder="F2 para buscar"></b-form-input>
             </b-col>
-            <b-col sm="12" md="2" class="mt-4">
+            <b-col sm="12" md="2" style="margin-top: 55px;">
                 <b-button type="button" size="sm" block variant="success" @click="obtenerProucto">Agregar</b-button>
             </b-col>
 
@@ -109,13 +109,33 @@ export default {
             codigo: '',
             cantidad: '',
             entidad: '',
-            movimento: 'salida',
+            movimento: '',
             fecha: moment(Date.now()).format('YYYY-MM-DD'),
             persona: '',
             destino: ''
         }
     },
     methods: {
+        getCode(){
+            let code_completo = this.codigo.split('*')
+           
+            if (code_completo.length == 1) {
+                this.codigo = code_completo[0]
+                this.cantidad = 1
+
+                this.obtenerProucto()
+
+            }else{
+                let cant = code_completo[0]
+                let codProducto = code_completo[1]
+
+                this.codigo = codProducto
+                this.cantidad = cant
+
+                this.obtenerProucto()
+            }
+            
+        },
         async obtenerProucto(){
 
             if (this.codigo == '' || this.cantidad == '' || this.entidad == '') {
@@ -128,55 +148,101 @@ export default {
                     minix({icon: 'error', mensaje: 'Este código no existe :/', tiempo: 3000})
                     document.getElementById('xcodigo').focus()
                 }else{
+
                     if (this.entidad == 'iglesia') {
 
-                        if (parseInt(articulo.data.existencia_iglesia) < parseInt(this.cantidad)) {
+                        if (parseInt(this.cantidad) > parseInt(articulo.data.existencia_iglesia)) {
 
-                            minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
+                            minix({icon: 'info', mensaje: `Disponible: ${articulo.data.existencia_iglesia}`, tiempo: 5000})
                             document.getElementById('cantidad_').focus()
 
                         }else{
-                            let datos = {
-                                codigo: articulo.data.codigo,
-                                nombre: articulo.data.nombre,
-                                cantidad: this.cantidad,
-                                entidad: this.entidad,
-                                fecha: this.fecha,
-                                destino: this.destino
+
+                            let acomulado = 0
+
+                            this.carrito.forEach(e => {
+                                if (this.codigo == e.codigo) {
+                                    acomulado += parseInt(e.cantidad)
+                                }
+                            });
+
+
+                            if (parseInt(acomulado) + parseInt(this.cantidad) > parseInt(articulo.data.existencia_iglesia)) {
+
+                                minix({icon: 'info', mensaje: `Disponible: ${articulo.data.existencia_iglesia}`, tiempo: 6000})
+
+                                this.codigo = ''
+                                document.getElementById('xcodigo').focus()
+                                
+                            }else{
+
+                                let datos = {
+                                    codigo: articulo.data.codigo,
+                                    nombre: articulo.data.nombre,
+                                    cantidad: this.cantidad,
+                                    entidad: this.entidad,
+                                    fecha: this.fecha,
+                                    destino: this.destino
+                                }
+                    
+                                this.carrito.unshift(datos)
+                                this.codigo = ''
+                                this.cantidad = ''
+                                //this.entidad = ''
+                                
+                    
+                                document.getElementById('xcodigo').focus()
                             }
-                
-                            this.carrito.unshift(datos)
-                            this.codigo = ''
-                            this.cantidad = ''
-                            this.entidad = ''
-                            
-                
-                            document.getElementById('xcodigo').focus()
+
                         }
                     }else if(this.entidad == 'oficina'){
 
-                        if (parseInt(articulo.data.existencia_oficina) < parseInt(this.cantidad)) {
 
-                            minix({icon: 'info', mensaje: 'No hay stock suficiente para este artículo', tiempo: 5000})
+                        if (parseInt(this.cantidad) > parseInt(articulo.data.existencia_oficina)) {
+
+                            minix({icon: 'info', mensaje: `Disponible: ${articulo.data.existencia_oficina}`, tiempo: 6000})
                             document.getElementById('cantidad_').focus()
 
                         }else{
-                            let datos = {
-                                codigo: articulo.data.codigo,
-                                nombre: articulo.data.nombre,
-                                cantidad: this.cantidad,
-                                entidad: this.entidad,
-                                fecha: this.fecha,
-                                destino: this.destino
+
+                            let acomulado = 0
+
+                            this.carrito.forEach(e => {
+                                if (this.codigo == e.codigo) {
+                                    acomulado += parseInt(e.cantidad)
+                                }
+                            });
+
+
+                            if (parseInt(acomulado) + parseInt(this.cantidad) > parseInt(articulo.data.existencia_oficina)) {
+
+                                minix({icon: 'info', mensaje: `Disponible: ${articulo.data.existencia_oficina}`, tiempo: 6000})
+
+                                this.codigo = ''
+                                document.getElementById('xcodigo').focus()
+                                
+                            }else{
+
+                                let datos = {
+                                    codigo: articulo.data.codigo,
+                                    nombre: articulo.data.nombre,
+                                    cantidad: this.cantidad,
+                                    entidad: this.entidad,
+                                    fecha: this.fecha,
+                                    destino: this.destino
+                                }
+                    
+                                this.carrito.unshift(datos)
+                                this.codigo = ''
+                                this.cantidad = ''
+                                //this.entidad = ''
+                                
+                    
+                                document.getElementById('xcodigo').focus()
                             }
-                
-                            this.carrito.unshift(datos)
-                            this.codigo = ''
-                            this.cantidad = ''
-                            this.entidad = ''
+
+
                             
-                
-                            document.getElementById('xcodigo').focus()
                         }
                     }
                 }   
