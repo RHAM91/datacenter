@@ -4,7 +4,7 @@
             <b-row>
                 <b-col sm="12" md="10" class="mt-2">
                     <label>Código</label>
-                    <b-form-input type="text" id="buscarcodigo" v-model="codigo" size="sm" @keydown.113="abrirModalB" required  placeholder="F2 para buscar"></b-form-input>
+                    <b-form-input type="text" id="buscarcodigo" v-model="codigo" size="sm" @keydown.113="abrirModalB" @keydown.enter="busquedaporcodigo" required  placeholder="F2 para buscar"></b-form-input>
                 </b-col>
                 <b-col sm="12" md="2" style="margin-top:40px;">
                     <b-button type="button" size="sm" @click="busquedaporcodigo" block variant="success">Buscar</b-button>
