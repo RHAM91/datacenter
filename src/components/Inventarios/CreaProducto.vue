@@ -1,5 +1,5 @@
 <template>
-    <b-form fluid>
+    <b-container fluid>
         <b-row>
             <b-col sm="12" md="3" class="">
                 <label>Código</label>
@@ -11,7 +11,7 @@
                 <b-form-input v-model="nombre" type="text" size="sm"></b-form-input>
             </b-col>
 
-            <b-col sm="12" md="4" class="mt-3" >
+            <b-col sm="12" md="3" class="mt-3" >
                 <label>Bodega</label>
                 <select class="form-control form-control-sm" required v-model="lugar">
                     <option value="">Seleccciona</option>
@@ -34,7 +34,7 @@
                 <b-form-input type="number" placeholder="Q." v-model="precio" step="0.01" size="sm"></b-form-input>
             </b-col> -->
 
-            <b-col sm="12" md="4" class="mt-3">
+            <b-col sm="12" md="3" class="mt-3">
                 <label>Categoría</label>
                 <select class="form-control form-control-sm" v-model="categoria">
                     <option value="">Selecciona</option>
@@ -42,12 +42,17 @@
                 </select>
             </b-col>
 
-            <b-col sm="12" md="4" class="mt-3">
+            <b-col sm="12" md="3" class="mt-3">
                 <label>Medida</label>
                 <select class="form-control form-control-sm" v-model="medida">
                     <option value="">Selecciona</option>
                     <option v-for="(item, index) in inventario_medidas" :key="index" :value="item.medida">{{item.medida}}</option>
                 </select>
+            </b-col>
+
+            <b-col sm="12" md="3" class="mt-3">
+                <label>Stock mínimo</label>
+                <b-form-input type="number" size="sm" v-model="minimo" required></b-form-input>
             </b-col>
 
             <b-col sm="12" class="mt-3">
@@ -74,12 +79,14 @@
 
         <Settings v-if="modal_settings" v-on:cerrarModal="cerrarM" />
 
-    </b-form>
+    </b-container>
 </template>
 
 <script>
 
 import Settings from './CreaProducto.settings.vue'
+import {IP, PUERTO} from '@/config/parametros'
+import {minix} from '@/components/functions/alertas'
 
 import { mapActions, mapState } from 'vuex'
 export default {
@@ -97,41 +104,50 @@ export default {
             categoria: '',
             medida: '',
             lugar: '',
+            minimo: '',
             ubicacion: 'n/a',
             observaciones: '',
-            modal_settings: false
+            modal_settings: false,
         }
     },
     methods: {
         async guardarDatos(){
-            let data = {
-                api: 'productos',
-                formulario: {
-                    codigo: this.codigo,
-                    nombre: this.nombre,
-                    categoria: this.categoria,
-                    medida: this.medida,
-                    lugar: this.lugar,
-                    ubicacion: this.ubicacion,
-                    observaciones: this.observaciones
+
+            if (this.codigo == '' || this.nombre == '' || this.lugar == '' || this.categoria == '' || this.medida == '' || this.minimo == '') {
+                minix({icon: 'error', mensaje: 'Uno o más campos están vacios', tiempo: 3000})
+            }else{
+
+                let data = {
+                    api: 'productos',
+                    formulario: {
+                        codigo: this.codigo,
+                        nombre: this.nombre,
+                        categoria: this.categoria,
+                        medida: this.medida,
+                        lugar: this.lugar,
+                        minimo: this.minimo,
+                        ubicacion: this.ubicacion,
+                        observaciones: this.observaciones
+                    }
                 }
-            }
-
-            await this.insert_data(data)
-
-            if (this.$store.state.no_formulario == 0) {
+    
+                await this.insert_data(data)
+    
+                if (this.$store.state.no_formulario == 0) {
+                    
+                    await this.wse(this.$store.state.rutas.inventario_productos)
+    
+                    this.codigo = ''
+                    this.nombre = ''
+                    this.lugar = ''
+                    this.minimo = ''
+                    this.ubicacion = ''
+                    this.categoria = ''
+                    this.medida = ''
+                    this.observaciones = ''
+                }
                 
-                await this.wse(this.$store.state.rutas.inventario_productos)
-
-                this.codigo = ''
-                this.nombre = ''
-                this.lugar = ''
-                this.ubicacion = ''
-                this.categoria = ''
-                this.medida = ''
-                this.observaciones = ''
             }
-
 
         },
         abrirM(){

@@ -47,7 +47,7 @@
                                         <td>
                                             {{item.nombre}}
                                         </td>
-                                        <td :class="[item.existencia_iglesia == 0 ? '_rojo': item.existencia_iglesia == 2 ? '_amarillo': '']" style="text-align: center;">
+                                        <td :class="[item.existencia_iglesia == 0 ? '_rojo': item.existencia_iglesia == 1 ? '_anaranjado': item.existencia_iglesia == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_iglesia}}
                                         </td>
                                     </tr>
@@ -79,7 +79,7 @@
                                         <td>
                                             {{item.nombre}}
                                         </td>
-                                        <td :class="[item.existencia_oficina == 0 ? '_rojo': item.existencia_oficina == 2 ? '_amarillo': '']" style="text-align: center;">
+                                        <td :class="[item.existencia_oficina == 0 ? '_rojo': item.existencia_oficina == 1 ? '_anaranjado': item.existencia_oficina == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_oficina}}
                                         </td>
                                     </tr>
@@ -186,5 +186,9 @@ export default {
         ._amarillo{
             background-color: #ffe347;
             color: black;
+        }
+        ._anaranjado{
+            background-color: #ffb400;
+            color: white;
         }
 </style>
