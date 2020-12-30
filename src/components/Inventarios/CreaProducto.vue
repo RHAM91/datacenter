@@ -104,7 +104,7 @@ export default {
             categoria: '',
             medida: '',
             lugar: '',
-            minimo: '',
+            minimo: '3',
             ubicacion: 'n/a',
             observaciones: '',
             modal_settings: false,
@@ -146,7 +146,7 @@ export default {
                     this.medida = ''
                     this.observaciones = ''
                 }
-                
+
             }
 
         },
