@@ -23,19 +23,23 @@
                     <label>Nombre</label>
                     <b-form-input type="text" v-model="nombre" size="sm"></b-form-input>
                 </b-col>
-                <b-col sm="12" md="6" class="mt-3">
+                <b-col sm="12" md="4" class="mt-3">
                     <label>Categoría</label>
                     <select class="form-control form-control-sm" v-model="categoria">
                         <option value="">Selecciona</option>
                         <option v-for="(item, index) in inventario_categorias" :key="index" :value="item.categoria">{{item.categoria}}</option>
                     </select>
                 </b-col>
-                <b-col sm="12" md="6" class="mt-3">
+                <b-col sm="12" md="4" class="mt-3">
                     <label>Medida</label>
                     <select class="form-control form-control-sm" v-model="medida">
                         <option value="">Selecciona</option>
                         <option v-for="(item, index) in inventario_medidas" :key="index" :value="item.medida">{{item.medida}}</option>
                     </select>
+                </b-col>
+                <b-col sm="12" md="4" class="mt-3">
+                    <label>Stock mínimo</label>
+                    <b-form-input type="number" size="sm" v-model="minimo"></b-form-input>
                 </b-col>
                 <b-col sm="12" class="mt-3">
                     <label>Observaciones</label>
@@ -82,6 +86,7 @@ export default {
             nombre: '',
             categoria: '',
             medida: '',
+            minimo:'',
             observaciones: '',
             id: ''
         }
@@ -113,6 +118,7 @@ export default {
                     this.nombre = datos.data.nombre
                     this.categoria = datos.data.categoria
                     this.medida = datos.data.medida
+                    this.minimo = datos.data.minimo
                     this.observaciones = datos.data.observaciones
                     this.id = datos.data._id
                 }
@@ -132,6 +138,7 @@ export default {
                     nombre: this.nombre,
                     categoria: this.categoria,
                     medida: this.medida,
+                    minimo: this.minimo,
                     observaciones: this.observaciones
                 }
                 
