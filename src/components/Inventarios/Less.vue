@@ -12,23 +12,23 @@
                         <label>Menor a</label>
                         <b-form-input type="number" v-model="cantidad" size="sm"></b-form-input>
                     </b-col>
-                    <b-col sm="12" md="5" class="mt-3">
+                    <b-col sm="12" md="7" class="mt-3">
                         <label>Bodega</label>
-                        <select class="form-control form-control-sm" v-model="bodega">
+                        <select class="form-control form-control-sm" @change="getDatos" v-model="bodega">
                             <option value="">Selecciona</option>
                             <option value="iglesia">Iglesia</option>
                             <option value="oficina">Oficina</option>
                         </select>
                     </b-col>
-                    <b-col sm="12" md="2" class="mt-5">
+                    <!-- <b-col sm="12" md="2" class="mt-5">
                         <b-button type="button" size="sm" block variant="success" @click="getDatos">Consultar</b-button>
-                    </b-col>
+                    </b-col> -->
                     <b-col v-if="bodega == 'iglesia'" sm="12" class="mt-3">
                         <div class="datos_resultado">
                             <table class="table table-bordered table-hover table-sm" style="font-size: 12px;">
                                 <thead>
                                     <tr>
-                                        <th style="width: 15%;">
+                                        <th style="width: 25%;">
                                             Código
                                         </th>
                                         <th style="width: 65%;">
@@ -36,9 +36,6 @@
                                         </th>
                                         <th style="width: 10%;text-align: center;">
                                             Iglesia
-                                        </th>   
-                                        <th style="width: 10%;text-align:center;">
-                                            Opciones
                                         </th>
                                     </tr>
                                 </thead>
@@ -50,15 +47,8 @@
                                         <td>
                                             {{item.nombre}}
                                         </td>
-                                        <td style="text-align: center;">
+                                        <td :class="[item.existencia_iglesia == 0 ? '_rojo': item.existencia_iglesia == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_iglesia}}
-                                        </td>
-                                        <td>
-                                            <div class="btns">
-                                                <b-button type="button" size="sm" variant="primary" style="margin-right: 10px;" @click="abrirModal_1({id: item.codigo, nombre: item.nombre, iglesia: item.existencia_iglesia, oficina: item.existencia_oficina, descripcion: item.descripcion})"><i class="fas fa-info-circle"></i></b-button>
-                                                <!-- <b-button type="button" size="sm" variant="success" style="margin-right: 10px;" @click="descargaInventario(item._id)" title="Descargar inventario"><i class="fas fa-arrow-circle-down"></i></b-button>
-                                                <b-button type="button" size="sm" variant="danger" @click="cargarInventario({id: item.id_existencia,nombre: item.nombre})" title="Cargar inventario"><i class="fas fa-spinner"></i></b-button> -->
-                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -70,7 +60,7 @@
                             <table class="table table-bordered table-hover table-sm" style="font-size: 12px;">
                                 <thead>
                                     <tr>
-                                        <th style="width: 15%;">
+                                        <th style="width: 25%;">
                                             Código
                                         </th>
                                         <th style="width: 65%;">
@@ -78,9 +68,6 @@
                                         </th>
                                         <th style="width: 10%;text-align: center;">
                                             Oficina
-                                        </th>         
-                                        <th style="width: 10%;text-align:center;">
-                                            Opciones
                                         </th>
                                     </tr>
                                 </thead>
@@ -92,15 +79,8 @@
                                         <td>
                                             {{item.nombre}}
                                         </td>
-                                        <td style="text-align: center;">
+                                        <td :class="[item.existencia_oficina == 0 ? '_rojo': item.existencia_oficina == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_oficina}}
-                                        </td>
-                                        <td>
-                                            <div class="btns">
-                                                <b-button type="button" size="sm" variant="primary" style="margin-right: 10px;" @click="abrirModal_1({id: item.codigo, nombre: item.nombre, iglesia: item.existencia_iglesia, oficina: item.existencia_oficina, descripcion: item.descripcion})"><i class="fas fa-info-circle"></i></b-button>
-                                                <!-- <b-button type="button" size="sm" variant="success" style="margin-right: 10px;" @click="descargaInventario(item._id)" title="Descargar inventario"><i class="fas fa-arrow-circle-down"></i></b-button>
-                                                <b-button type="button" size="sm" variant="danger" @click="cargarInventario({id: item.id_existencia,nombre: item.nombre})" title="Cargar inventario"><i class="fas fa-spinner"></i></b-button> -->
-                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -196,5 +176,15 @@ export default {
             width: 100%;
             height: 425px;
             overflow: auto;
+        }
+
+        ._rojo{
+            background-color: #ef3054;
+            color: white;
+        }
+        
+        ._amarillo{
+            background-color: #ffe347;
+            color: black;
         }
 </style>

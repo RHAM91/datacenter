@@ -30,10 +30,10 @@
                             <td>
                                 {{item.nombre}}
                             </td>
-                            <td style="text-align: center;">
+                            <td :class="[item.existencia_iglesia == 0 ? '_rojo' : item.existencia_iglesia == 2 ? '_amarillo': '']" style="text-align: center;">
                                 {{item.existencia_iglesia}}
                             </td>
-                            <td style="text-align: center;">
+                            <td :class="[item.existencia_oficina == 0 ? '_rojo' : item.existencia_oficina == 2 ? '_amarillo': '']" style="text-align: center;">
                                 {{item.existencia_oficina}}
                             </td>
                             <td>
