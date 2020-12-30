@@ -140,7 +140,6 @@ export default {
                     this.codigo = ''
                     this.nombre = ''
                     this.lugar = ''
-                    this.minimo = ''
                     this.ubicacion = ''
                     this.categoria = ''
                     this.medida = ''
