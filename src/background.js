@@ -11,6 +11,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
+let actualizacion
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -19,12 +20,15 @@ protocol.registerSchemesAsPrivileged([
 
 
 function buscarActualizacion(){
+    console.log('buscando....')
     autoUpdater.checkForUpdates()
     autoUpdater.on('update-downloaded', () => {
 
       setTimeout(()=>{ // ESPERA 10 SEGUNDOS PARA ENVIAR EL MENSAJE DE QUE DEBE SER ACTUALIZADA LA APP
         win.webContents.send('actualizacion', true)
       }, 10000)
+
+      clearInterval(actualizacion) // al momento de descargar la actualizacion detiene el ciclo de busqueda
 
      
       // const dialogOpts = {
@@ -66,7 +70,7 @@ function createWindow() {
     //buscarActualizacion()
   }
 
-  let actualizacion = setInterval(buscarActualizacion, 30 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
+  actualizacion = setInterval(buscarActualizacion, 10 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
 
   win.on('closed', () => {
     win = null
