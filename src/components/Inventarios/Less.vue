@@ -10,7 +10,7 @@
                     </b-col>
                     <b-col sm="12" md="5" class="mt-3">
                         <label>Menor a</label>
-                        <b-form-input type="number" v-model="cantidad" size="sm"></b-form-input>
+                        <b-form-input type="number" v-model="cantidad" size="sm" @keydown.enter="getDatos"></b-form-input>
                     </b-col>
                     <b-col sm="12" md="7" class="mt-3">
                         <label>Bodega</label>
@@ -97,6 +97,7 @@
 
 import axios from 'axios'
 import {IP, PUERTO} from '@/config/parametros'
+import { minix } from '@/components/functions/alertas'
 
 export default {
     name: 'Less',
@@ -124,27 +125,33 @@ export default {
             }
         },
         async getDatos(){
-            
-            if (this.bodega == 'iglesia') {
-                
-                let data = {
-                    bodega: this.bodega,
-                    cantidad: this.cantidad
-                }
-    
-                let datosIglesia = await axios.post(`http://${IP}:${PUERTO}/api/productos/less`, data, this.$store.state.token)
-                this.dataIglesia = datosIglesia.data
+
+            if (this.cantidad == '' || this.cantidad <= 0 || this.cantidad == '0') {
+                minix({icon: 'error', mensaje: 'La cantidad a consultar debe ser mayor que cero', tiempo: 3000})
             }else{
 
-                let data = {
-                    bodega: this.bodega,
-                    cantidad: this.cantidad
-                }
+                if (this.bodega == 'iglesia') {
+                    
+                    let data = {
+                        bodega: this.bodega,
+                        cantidad: this.cantidad
+                    }
+        
+                    let datosIglesia = await axios.post(`http://${IP}:${PUERTO}/api/productos/less`, data, this.$store.state.token)
+                    this.dataIglesia = datosIglesia.data
+                }else{
     
-                let datosOficina = await axios.post(`http://${IP}:${PUERTO}/api/productos/less`, data, this.$store.state.token)
-                this.dataOficina = datosOficina.data
-                
+                    let data = {
+                        bodega: this.bodega,
+                        cantidad: this.cantidad
+                    }
+        
+                    let datosOficina = await axios.post(`http://${IP}:${PUERTO}/api/productos/less`, data, this.$store.state.token)
+                    this.dataOficina = datosOficina.data
+                    
+                }
             }
+            
 
         }
     },
@@ -164,6 +171,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 999;
     }
         .cuadro_less{
             width: 800px;
