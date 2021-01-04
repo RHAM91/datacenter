@@ -3,7 +3,7 @@
         <b-row>
             <b-col sm="12" md="12" class="mt-3">
                 <label>Producto</label>
-                <b-form-input type="text" id="codigo_producto_movimientos" size="sm" v-model="codigo" placeholder="Código (F2 para buscar)"></b-form-input>
+                <b-form-input type="text" id="codigo_producto_movimientos" size="sm" v-model="codigo" @keydown.113="abrirModalBusqueda" placeholder="Código (F2 para buscar)"></b-form-input>
             </b-col>
             <b-col sm="12" md="3" class="mt-2">
                 <label>Del</label>
@@ -82,6 +82,10 @@
 
 
         <!-- <Flotante /> -->
+
+        <ModalBusqueda v-if="modalbusqueda" v-on:cerrarmodal="closemodal" v-on:IDP="setIDP"/>
+
+
     </b-container>
 
 </template>
@@ -93,12 +97,13 @@ import moment from 'moment'
 import { IP, PUERTO } from '@/config/parametros'
 import { minix } from '@/components/functions/alertas'
 import Flotante from '../../varios/Btn_flotante'
-
+import ModalBusqueda from '../../Inventarios/Ingreso.modal.productos.vue'
 
 export default {
     name: "Kardex",
     components:{
-        Flotante
+        Flotante,
+        ModalBusqueda
     },
     data() {
         return {
@@ -106,7 +111,8 @@ export default {
             resultados: [],
             bodega: "",
             finicial: "",
-            ffinal: ""
+            ffinal: "",
+            modalbusqueda: false
         }
     },
     methods: {
@@ -127,6 +133,17 @@ export default {
                 this.resultados = res.data
             }
 
+        },
+        abrirModalBusqueda(){
+            this.modalbusqueda = true
+        },
+        closemodal(){
+            this.modalbusqueda = false
+        },
+        setIDP(id){
+            this.codigo = id
+            this.modalbusqueda = false
+            document.getElementById('codigo_producto_movimientos').focus()
         }
     },
     mounted() {
