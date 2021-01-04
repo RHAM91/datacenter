@@ -66,27 +66,7 @@ function createWindow() {
     //buscarActualizacion()
   }
 
-  // let actualizacion = setInterval(() => {
-  //   autoUpdater.checkForUpdates()
-  //   autoUpdater.on('update-downloaded', () => {
-
-  //     const dialogOpts = {
-  //       type: 'info',
-  //       buttons: ['Actualizar', 'Después'],
-  //       title: 'Actualización disponible',
-  //       message: `NUEVA VERSION DISPONIBLE`,
-  //       detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
-  //     }
-
-  //     dialog.showMessageBox(dialogOpts).then(({ response }) => {
-  //       if (response === 0) {
-  //         autoUpdater.quitAndInstall()
-  //       }else{
-  //         clearInterval(actualizacion)
-  //       }
-  //     })
-  //   })
-  // }, 60 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
+  let actualizacion = setInterval(buscarActualizacion, 30 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
 
   win.on('closed', () => {
     win = null
