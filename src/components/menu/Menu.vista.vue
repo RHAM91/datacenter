@@ -35,8 +35,11 @@
                 <div class="link" @click="salir"><i class="fas fa-sign-out-alt"></i>Salir</div>
             </li>
         </ul>
-        <div class="version">
+        <div v-if="update == false" class="version">
             v{{version}}
+        </div>
+        <div v-else class="btn_update" @click="pushversion">
+            Actualizar
         </div>
     </div>
 </template>
@@ -58,7 +61,8 @@ export default {
     name: "Menu",
     data() {
         return {
-            version: ''
+            version: '',
+            update: false // debe estar en false
         }
     },
     computed: {
@@ -85,6 +89,15 @@ export default {
                 ipcRenderer.removeAllListeners('app_version');
                 this.version = arg.version
             });
+
+            // Evento para mostrar el boton de actualizacion en el sistema
+
+            ipcRenderer.on('actualizacion', (event, message)=>{
+                this.update = message
+            })
+        },
+        pushversion(){ // funcion para para enviar la orden de cerrar y aplicar actualizacion al proceso principal
+            ipcRenderer.send('ok_update')
         }
     },
     mounted() {
@@ -263,4 +276,25 @@ export default {
         bottom: 2px;
         left: 4px;
     }
+
+    .btn_update{
+        width: 250px;
+        height: 40px;
+        background-color: #0081af; 
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: .4s;
+    }
+        .btn_update:hover{
+            background-color: orangered;
+            font-size: 20px;
+        }
 </style>

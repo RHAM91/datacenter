@@ -21,18 +21,23 @@ protocol.registerSchemesAsPrivileged([
 function buscarActualizacion(){
     autoUpdater.checkForUpdates()
     autoUpdater.on('update-downloaded', () => {
-     
-      const dialogOpts = {
-        type: 'info',
-        buttons: ['Actualizar', 'Después'],
-        title: 'Actualización disponible',
-        message: `NUEVA VERSION DISPONIBLE`,
-        detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
-      }
 
-      dialog.showMessageBox(dialogOpts).then(({ response }) => {
-        if (response === 0) autoUpdater.quitAndInstall()
-      })
+      setTimeout(()=>{ // ESPERA 10 SEGUNDOS PARA ENVIAR EL MENSAJE DE QUE DEBE SER ACTUALIZADA LA APP
+        win.webContents.send('actualizacion', true)
+      }, 10000)
+
+     
+      // const dialogOpts = {
+      //   type: 'info',
+      //   buttons: ['Actualizar', 'Después'],
+      //   title: 'Actualización disponible',
+      //   message: `NUEVA VERSION DISPONIBLE`,
+      //   detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
+      // }
+
+      // dialog.showMessageBox(dialogOpts).then(({ response }) => {
+      //   if (response === 0) autoUpdater.quitAndInstall()
+      // })
     })
 }
 
@@ -58,31 +63,30 @@ function createWindow() {
     win.loadURL('app://./index.html')
     //autoUpdater.checkForUpdatesAndNotify()
     //autoUpdater.checkForUpdates()
-    buscarActualizacion()
+    //buscarActualizacion()
   }
 
-  let actualizacion = setInterval(() => {
-    autoUpdater.checkForUpdates()
-    autoUpdater.on('update-downloaded', () => {
-     
+  // let actualizacion = setInterval(() => {
+  //   autoUpdater.checkForUpdates()
+  //   autoUpdater.on('update-downloaded', () => {
 
-      const dialogOpts = {
-        type: 'info',
-        buttons: ['Actualizar', 'Después'],
-        title: 'Actualización disponible',
-        message: `NUEVA VERSION DISPONIBLE`,
-        detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
-      }
+  //     const dialogOpts = {
+  //       type: 'info',
+  //       buttons: ['Actualizar', 'Después'],
+  //       title: 'Actualización disponible',
+  //       message: `NUEVA VERSION DISPONIBLE`,
+  //       detail: 'Una nueva versión ha sido descargada. Presiona "Actualizar" para aplicar los cambios.'
+  //     }
 
-      dialog.showMessageBox(dialogOpts).then(({ response }) => {
-        if (response === 0) {
-          autoUpdater.quitAndInstall()
-        }else{
-          clearInterval(actualizacion)
-        }
-      })
-    })
-  }, 60 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
+  //     dialog.showMessageBox(dialogOpts).then(({ response }) => {
+  //       if (response === 0) {
+  //         autoUpdater.quitAndInstall()
+  //       }else{
+  //         clearInterval(actualizacion)
+  //       }
+  //     })
+  //   })
+  // }, 60 * 60 * 1000) // para cambiar el tiempo del intervalo em minutos, modificar solo el primer 60
 
   win.on('closed', () => {
     win = null
@@ -126,9 +130,21 @@ app.on('ready', async () => {
   createWindow()
 })
 
+
+// --> EVENTO PARA BUSCAR Y MOSTRAR ACTUALIZACION
+
 ipcMain.on('app_version', (event)=>{
-  event.sender.send('app_version', {version: app.getVersion()})
+  event.sender.send('app_version', {version: app.getVersion()}) // ENVIA LA VERSION DEL SOFWARE
+  buscarActualizacion() // BUSCAR ACTUALIZACION
 })
+
+// --> EVENTO QUE APLICA ACTUALIZACION
+
+ipcMain.on('ok_update', (event) =>{ 
+  autoUpdater.quitAndInstall()
+})
+
+// --> EVENTO PARA EJECUTAR ORDEN Y VER PDF
 
 ipcMain.on('vale_salida', (event, args)=>{
   shell.openExternal(args)
