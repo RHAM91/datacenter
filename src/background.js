@@ -20,7 +20,7 @@ protocol.registerSchemesAsPrivileged([
 
 
 function buscarActualizacion(){
-    console.log('buscando....')
+    //console.log('buscando....')
     autoUpdater.checkForUpdates()
     autoUpdater.on('update-downloaded', () => {
 
