@@ -25,6 +25,7 @@
                             <b-tab v-if="permisos.pacientes.listar" title="Crea artículo" @click="setSubModulo('creaproducto')"></b-tab>
                             <b-tab v-if="permisos.pacientes.listar" title="Ingreso de producto" @click="setSubModulo('ingresodeproducto')"></b-tab>
                             <b-tab v-if="permisos.pacientes.listar" title="Salida de producto" @click="setSubModulo('salidadeproducto')"></b-tab>
+                            <b-tab v-if="permisos.pacientes.listar" title="Carrito" @click="setSubModulo('carrito')"></b-tab>
                             <!-- <b-tab title="Bloqueados" @click="setSubModulo('Bloqueados')"></b-tab> -->
                         </b-tabs>
                     </b-col>
@@ -45,6 +46,10 @@
                         <Salida />
                     </b-col>
 
+                    <b-col sm="12" v-if="submodulo == 'carrito'">
+                        <Carrito />
+                    </b-col>
+
                 </b-row>
             </b-container>
 
@@ -58,6 +63,7 @@ import Productos from '@/components/Inventarios/Productos.vue'
 import CreaProducto from '@/components/Inventarios/CreaProducto.vue'
 import Ingreso from '@/components/Inventarios/Ingreso.productos.vue'
 import Salida from '@/components/Inventarios/Salida.productos.vue'
+import Carrito from '@/components/Inventarios/Carrito.vue'
 
 
 //--> GIF ANIMADO PARA LAS DESCARGAS
@@ -75,6 +81,7 @@ export default {
         CreaProducto,
         Ingreso,
         Salida,
+        Carrito,
         Loading
     },
     data() {

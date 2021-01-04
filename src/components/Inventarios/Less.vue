@@ -5,8 +5,9 @@
                 <b-row>
                     <b-col sm="12" class="mt-3">
                         <h2>
-                            Consulta de productos con poco stock
+                            Consulta de productos con poco stock 
                         </h2>
+                        <b-button type="button" size="sm" variant="danger" @click="remarcar">ok</b-button>
                     </b-col>
                     <b-col sm="12" md="5" class="mt-3">
                         <label>Menor a</label>
@@ -63,11 +64,14 @@
                                         <th style="width: 25%;">
                                             Código
                                         </th>
-                                        <th style="width: 65%;">
+                                        <th style="width: 55%;">
                                             Nombre
                                         </th>
                                         <th style="width: 10%;text-align: center;">
                                             Oficina
+                                        </th>
+                                        <th style="width: 10%;text-align: center;">
+                                            Carrito
                                         </th>
                                     </tr>
                                 </thead>
@@ -81,6 +85,11 @@
                                         </td>
                                         <td :class="[item.existencia_oficina == 0 ? '_rojo': item.existencia_oficina == 1 ? '_anaranjado': item.existencia_oficina == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_oficina}}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <b-button v-if="item.marca == false" type="button" size="sm" variant="primary" @click="marca({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_oficina, pos: index, marca: true})"><i class="fas fa-cart-plus"></i></b-button>
+
+                                            <b-button v-else type="button" size="sm" variant="danger" @click="marca({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_oficina, pos: index, marca: false})">{{index}}</b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -98,15 +107,20 @@
 import axios from 'axios'
 import {IP, PUERTO} from '@/config/parametros'
 import { minix } from '@/components/functions/alertas'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
     name: 'Less',
+    computed:{
+        ...mapState(['carrito'])
+    },
     data() {
         return {
             cantidad: 3,
             bodega: '',
             dataOficina: [],
-            dataIglesia: []
+            dataIglesia: [],
+            carrito2: []
         }
     },
     created() {
@@ -149,11 +163,48 @@ export default {
                     let datosOficina = await axios.post(`http://${IP}:${PUERTO}/api/productos/less`, data, this.$store.state.token)
                     this.dataOficina = datosOficina.data
                     
+                    let dof = datosOficina.data
+
+                    dof.forEach(e => {
+                        e.marca = false
+                    });
+
                 }
             }
-            
+        },
+        marca(producto){
+            let data = {
+                codigo: producto.codigo,
+                nombre: producto.nombre,
+                existencia_oficina: producto.cantidad,
+                marca: producto.marca
+            }
 
-        }
+            this.dataOficina.splice(producto.pos, 1, data)
+
+            if (producto.marca) {
+                this.carrito2.push(data)
+                this.set_carrito(this.carrito2)
+            }else{
+                for (let i = 0; i < this.carrito2.length; i++) {
+                    const e = this.carrito2[i];
+                    if (e.codigo == producto.codigo) {
+                        this.carrito2.splice(i,1)
+                    }
+                }
+                
+                this.set_carrito(this.carrito2)
+
+            }
+        },
+        remarcar(){
+            for (let i = 0; i < this.carrito.length; i++) {
+                const e = this.carrito[i];
+                
+                this.marca(e)
+            }
+        },
+        ...mapMutations(['set_carrito'])
     },
     mounted() {
     },

@@ -41,6 +41,7 @@ export default new Vuex.Store({
     no_formulario: 0, // esta variable sirve para validar si el producto ya existe no borrar los datos del formulario
 
     permisos:[],
+    carrito: [],
     inventarios:[],
     inventario_categorias: [],
     inventario_productos: [],
@@ -129,6 +130,9 @@ export default new Vuex.Store({
     },
     set_no_formulario(state, query){
         state.no_formulario = query
+    },
+    set_carrito(state, query){
+        state.carrito = query
     }
   },
   actions: {

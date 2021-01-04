@@ -286,7 +286,7 @@ export default {
         //     this.existencias = articulo.data
         // },
         borrarElemento(el){
-            this.carrito.splice(el,1)   
+            this.carrito.splice(el,1)
         },
         abrirModalBusqueda(){
             this.modalB = true
