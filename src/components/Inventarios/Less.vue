@@ -200,7 +200,8 @@ export default {
                     codigo: producto.codigo,
                     nombre: producto.nombre,
                     existencia_iglesia: producto.cantidad,
-                    marca: producto.marca
+                    marca: producto.marca,
+                    bodega
                 }
 
                 this.dataIglesia.splice(producto.pos, 1, data)
@@ -215,7 +216,8 @@ export default {
                     codigo: producto.codigo,
                     nombre: producto.nombre,
                     existencia_oficina: producto.cantidad,
-                    marca: producto.marca
+                    marca: producto.marca,
+                    bodega
                 }
     
                 this.dataOficina.splice(producto.pos, 1, data)
@@ -234,7 +236,8 @@ export default {
                     codigo: producto.codigo,
                     nombre: producto.nombre,
                     existencia_iglesia: producto.cantidad,
-                    marca: producto.marca
+                    marca: producto.marca,
+                    bodega
                 }
 
                 this.dataIglesia.splice(producto.pos, 1, data)
@@ -242,7 +245,7 @@ export default {
                 for (let i = 0; i < this.carrito2.length; i++) {
                     const e = this.carrito2[i];
 
-                    if (e.codigo == producto.codigo) {
+                    if (e.codigo == producto.codigo && e.bodega == bodega) {
                         this.carrito2.splice(i,1)
                     }
                 }
@@ -255,7 +258,8 @@ export default {
                     codigo: producto.codigo,
                     nombre: producto.nombre,
                     existencia_oficina: producto.cantidad,
-                    marca: producto.marca
+                    marca: producto.marca,
+                    bodega
                 }
     
                 this.dataOficina.splice(producto.pos, 1, data)
@@ -263,7 +267,7 @@ export default {
                 for (let i = 0; i < this.carrito2.length; i++) {
                     const e = this.carrito2[i];
     
-                    if (e.codigo == producto.codigo) {
+                    if (e.codigo == producto.codigo && e.bodega == bodega) {
                         this.carrito2.splice(i,1)
                     }
                 }
@@ -285,7 +289,7 @@ export default {
                     for (let x = 0; x < this.dataOficina.length; x++) {
                         const m = this.dataOficina[x];
                         
-                        if (e.codigo == m.codigo) {
+                        if (e.codigo == m.codigo && e.bodega == bodega) {
                             let data = {
                                 codigo: e.codigo,
                                 nombre: e.nombre,
@@ -307,7 +311,7 @@ export default {
                     for (let x = 0; x < this.dataIglesia.length; x++) {
                         const m = this.dataIglesia[x];
                         
-                        if (e.codigo == m.codigo) {
+                        if (e.codigo == m.codigo && e.bodega == bodega) {
                             let data = {
                                 codigo: e.codigo,
                                 nombre: e.nombre,
