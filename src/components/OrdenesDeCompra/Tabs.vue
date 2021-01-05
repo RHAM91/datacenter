@@ -21,28 +21,18 @@
                     </b-col>
                     <b-col sm="12">
                         <b-tabs content-class="mt-3">
-                            <b-tab v-if="permisos.pacientes.listar" title="Productos" @click="setSubModulo('productos')" active></b-tab>
-                            <b-tab v-if="permisos.pacientes.listar" title="Crea artículo" @click="setSubModulo('creaproducto')"></b-tab>
-                            <b-tab v-if="permisos.pacientes.listar" title="Ingreso de producto" @click="setSubModulo('ingresodeproducto')"></b-tab>
-                            <b-tab v-if="permisos.pacientes.listar" title="Salida de producto" @click="setSubModulo('salidadeproducto')"></b-tab>
-                            <!-- <b-tab title="Bloqueados" @click="setSubModulo('Bloqueados')"></b-tab> -->
+                            
+                            <b-tab v-if="permisos.pacientes.listar" title="Carrito" @click="setSubModulo('carrito')"></b-tab>
+                            <b-tab v-if="permisos.pacientes.listar" title="Ordenes" @click="setSubModulo('ordenes')"></b-tab>
                         </b-tabs>
                     </b-col>
 
-                    <b-col sm="12" v-if="submodulo == 'productos'">
-                        <Productos />
+                    <b-col sm="12" v-if="submodulo == 'carrito'">
+                        <Carrito />
                     </b-col>
 
-                    <b-col sm="12" v-if="submodulo == 'creaproducto'">
-                        <CreaProducto />
-                    </b-col>
-
-                    <b-col sm="12" v-if="submodulo == 'ingresodeproducto'">
-                        <Ingreso />
-                    </b-col>
-
-                    <b-col sm="12" v-if="submodulo == 'salidadeproducto'">
-                        <Salida />
+                    <b-col sm="12" v-if="submodulo == 'ordenes'">
+                        <Ordenes />
                     </b-col>
 
                 </b-row>
@@ -54,11 +44,8 @@
 
 <script>
 
-import Productos from '@/components/Inventarios/Productos.vue'
-import CreaProducto from '@/components/Inventarios/CreaProducto.vue'
-import Ingreso from '@/components/Inventarios/Ingreso.productos.vue'
-import Salida from '@/components/Inventarios/Salida.productos.vue'
-
+import Carrito from '@/components/OrdenesDeCompra/Carrito.vue'
+import Ordenes from '@/components/OrdenesDeCompra/Ordenes.vue'
 
 //--> GIF ANIMADO PARA LAS DESCARGAS
 
@@ -71,16 +58,14 @@ import { mapState } from 'vuex'
 export default {
     name: "Template",
     components:{
-        Productos,
-        CreaProducto,
-        Ingreso,
-        Salida,
+        Ordenes,
+        Carrito,
         Loading
     },
     data() {
         return {
             icono: true,
-            submodulo: 'productos',
+            submodulo: 'carrito',
         }
     },
     computed: {

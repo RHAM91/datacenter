@@ -13,6 +13,7 @@
                 <ul class="submenu">
                     <li><a href="#" @click="setmodulo('inventario-sistemas')">Registros</a></li>
                     <li ><a href="#" @click="setmodulo('pedidos')">Pedidos</a></li>
+                    <li ><a href="#" @click="setmodulo('ordendecompra')">Orden de compra</a></li>
                     <!-- <li><a href="#">Macbook Air</a></li> -->
                 </ul>
             </li>

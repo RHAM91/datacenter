@@ -61,7 +61,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import Less from './Less.vue'
+import Less from '@/components/Inventarios/Less.vue'
 import OrdenCompra from './EnviarOrdenCompra.vue'
 
 export default {
