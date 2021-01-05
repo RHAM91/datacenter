@@ -2,9 +2,6 @@
     <b-container fluid>
         <b-row>
             <b-col sm="12" class="mt-3">
-                <b-button type="button" size="sm" variant="success" @click="abriModal_less">Less</b-button>
-            </b-col>
-            <b-col sm="12" class="mt-3">
                 <table class="table table-sm table-bordered table-hover" style="font-size: 12px;">
                     <thead>
                         <tr>
@@ -50,32 +47,50 @@
         </b-row>
 
         <Less v-if="modal_less" v-on:clsModal="cerrarModal_less" />
+        <OrdenCompra v-if="modal_ordencompra" v-on:ocmodal="cerrarModal_oc" />
+
+        <div class="btn_flotante_enviar" @click="abriModal_enviar">
+            <i class="fas fa-paper-plane"></i>
+        </div>
+
+         <div class="btn_flotante_less" @click="abriModal_less">
+            <i class="fas fa-cart-plus"></i>
+        </div>
     </b-container>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 import Less from './Less.vue'
+import OrdenCompra from './EnviarOrdenCompra.vue'
 
 export default {
     name: "Carrito",
     components:{
-        Less
+        Less,
+        OrdenCompra
     },
     computed:{
         ...mapState(['carrito'])
     },
     data() {
         return {
-            modal_less: false
+            modal_less: false,
+            modal_ordencompra: false
         }
     },
     methods: {
         abriModal_less(){
             this.modal_less = true
         },
+        abriModal_enviar(){
+            this.modal_ordencompra = true
+        },
         cerrarModal_less(){
             this.modal_less = false
+        },
+        cerrarModal_oc(){
+            this.modal_ordencompra = false
         },
         sumar(index){
             this.sumarCompra(index)
@@ -89,5 +104,42 @@ export default {
 </script>
 
 <style>
+    .btn_flotante_less{
+        width: 40px;
+        height: 40px;
+        background-color: orangered;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+        transition: .4s ease;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
 
+        .btn_flotante_less:hover{
+            transform: scale(1.25);
+        }
+
+    .btn_flotante_enviar{
+        width: 40px;
+        height: 40px;
+        background-color: #5b85aa;
+        border-radius: 50%;
+        position: fixed;
+        bottom: 70px;
+        right: 15px;
+        transition: .4s ease;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+        .btn_flotante_enviar:hover{
+            transform: scale(1.25);
+        }
 </style>

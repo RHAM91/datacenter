@@ -50,11 +50,11 @@
         </b-row>
 
         <EntradaProductoModal v-if="modal_entrada_productos" :idp="id_producto" v-on:cerrarModal="cerrarModal_1" />
-        <Less v-if="modal_less" v-on:clsModal="cerrarModal_less" />
+        <!-- <Less v-if="modal_less" v-on:clsModal="cerrarModal_less" /> -->
 
-        <div class="btn_flotante_less" @click="abriModal_less">
+        <!-- <div class="btn_flotante_less" @click="abriModal_less">
             <i class="far fa-question-circle"></i>
-        </div>
+        </div> -->
 
     </b-container>
 </template>
@@ -62,7 +62,7 @@
 <script>
 
 import EntradaProductoModal from '@/components/Inventarios/EntradaProducto-modal.vue'
-import Less from './Less.vue'
+//import Less from './Less.vue'
 import { mapState } from 'vuex'
 
 
@@ -71,7 +71,7 @@ export default {
     name: "Productos",
     components: {
         EntradaProductoModal,
-        Less
+        
     },
     computed: {
         ...mapState(['inventario_productos'])
@@ -91,12 +91,12 @@ export default {
         cerrarModal_1(){
             this.modal_entrada_productos = false
         },
-        abriModal_less(){
-            this.modal_less = true
-        },
-        cerrarModal_less(){
-            this.modal_less = false
-        }
+        // abriModal_less(){
+        //     this.modal_less = true
+        // },
+        // cerrarModal_less(){
+        //     this.modal_less = false
+        // }
     },
 }
 </script>
@@ -113,7 +113,7 @@ export default {
         justify-content: center;
         
     }
-        .btn_flotante_less{
+        /* .btn_flotante_less{
             width: 45px;
             height: 45px;
             background-color: orangered;
@@ -131,5 +131,5 @@ export default {
 
             .btn_flotante_less:hover{
                 background-color: blue;
-            }
+            } */
 </style>
