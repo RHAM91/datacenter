@@ -167,7 +167,7 @@ export default {
 
                     let dig = datosIglesia.data
 
-                    dig.forEach(e => {
+                    dig.forEach(e => { // inserta la marca dentro del objeto JSON que trae la consulta post al API
                         e.marca = false
                     });
 
@@ -184,7 +184,7 @@ export default {
                     
                     let dof = datosOficina.data
 
-                    dof.forEach(e => {
+                    dof.forEach(e => { // inserta la marca dentro del objeto JSON que trae la consulta post al API
                         e.marca = false
                     });
 
@@ -195,13 +195,14 @@ export default {
         },
         marca(producto, bodega){
 
-            if (bodega == 'iglesia') {
+            if (bodega == 'iglesia') { // si al hacer click en el carrito, osea al hacer marca, este reemplaza la linea segun su posición y la reemplza con el objeto "data"
                 let data = {
                     codigo: producto.codigo,
                     nombre: producto.nombre,
                     existencia_iglesia: producto.cantidad,
                     marca: producto.marca,
-                    bodega
+                    bodega,
+                    cantx: 1
                 }
 
                 this.dataIglesia.splice(producto.pos, 1, data)
@@ -217,7 +218,8 @@ export default {
                     nombre: producto.nombre,
                     existencia_oficina: producto.cantidad,
                     marca: producto.marca,
-                    bodega
+                    bodega,
+                    cantx: 1
                 }
     
                 this.dataOficina.splice(producto.pos, 1, data)
@@ -237,7 +239,8 @@ export default {
                     nombre: producto.nombre,
                     existencia_iglesia: producto.cantidad,
                     marca: producto.marca,
-                    bodega
+                    bodega,
+                    cantx: 1
                 }
 
                 this.dataIglesia.splice(producto.pos, 1, data)
@@ -259,12 +262,13 @@ export default {
                     nombre: producto.nombre,
                     existencia_oficina: producto.cantidad,
                     marca: producto.marca,
-                    bodega
+                    bodega,
+                    cantx: 1
                 }
     
                 this.dataOficina.splice(producto.pos, 1, data)
     
-                for (let i = 0; i < this.carrito2.length; i++) {
+                for (let i = 0; i < this.carrito2.length; i++) { // este for es para que busque la posición del elemento deseado dentro del array y tambien valida si es de la misma bodega
                     const e = this.carrito2[i];
     
                     if (e.codigo == producto.codigo && e.bodega == bodega) {
@@ -294,7 +298,8 @@ export default {
                                 codigo: e.codigo,
                                 nombre: e.nombre,
                                 existencia_oficina: e.existencia_oficina,
-                                marca: e.marca
+                                marca: e.marca,
+                                cantx: e.cantx
                             }
     
                             this.dataOficina.splice(x, 1, data)
@@ -316,7 +321,8 @@ export default {
                                 codigo: e.codigo,
                                 nombre: e.nombre,
                                 existencia_iglesia: e.existencia_iglesia,
-                                marca: e.marca
+                                marca: e.marca,
+                                cantx: e.cantx
                             }
     
                             this.dataIglesia.splice(x, 1, data)

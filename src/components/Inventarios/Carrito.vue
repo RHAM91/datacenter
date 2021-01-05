@@ -11,14 +11,17 @@
                             <th style="width: 25%;">
                                 Código
                             </th>
-                            <th style="width: 55%;">
+                            <th style="width: 45%;">
                                 Nombre
                             </th>
                             <th style="width: 10%;text-align: center;">
-                                Bodega
+                                Para
                             </th>
                             <th style="width: 10%;text-align: center;">
                                 Cantidad
+                            </th>
+                            <th style="width: 10%;text-align: center;">
+                                ...
                             </th>
                         </tr>
                     </thead>
@@ -33,8 +36,12 @@
                             <td style="text-align:center;">
                                 {{item.bodega}}
                             </td>
-                            <td>
-                                
+                            <td style="text-align: center;">
+                                {{item.cantx}}
+                            </td>
+                            <td style="text-align: center;">
+                                <b-button type="button" size="sm" variant="success" style="margin-right: 5px;" @click="sumar(index)"><i class="fas fa-plus"></i></b-button>
+                                <b-button type="button" size="sm" variant="danger"><i class="fas fa-minus" @click="restar(index)"></i></b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -47,7 +54,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import Less from './Less.vue'
 
 export default {
@@ -69,7 +76,14 @@ export default {
         },
         cerrarModal_less(){
             this.modal_less = false
-        }
+        },
+        sumar(index){
+            this.sumarCompra(index)
+        },
+        restar(index){
+            this.restarCompra(index)
+        },
+        ...mapActions(['sumarCompra','restarCompra'])
     },
 }
 </script>

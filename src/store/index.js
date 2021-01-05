@@ -4,6 +4,7 @@ import { IP, PUERTO } from '../config/parametros'
 import axios from 'axios'
 import VuexPersist from 'vuex-persist'
 import { minix } from '../components/functions/alertas'
+import { stat } from 'fs'
 // import socket from '../config/sockets_config'
 
 Vue.use(Vuex)
@@ -43,6 +44,7 @@ export default new Vuex.Store({
 
     permisos:[],
     carrito: [],
+    cantidad_carrito: 0,
     inventarios:[],
     inventario_categorias: [],
     inventario_productos: [],
@@ -134,6 +136,9 @@ export default new Vuex.Store({
     },
     set_carrito(state, query){
         state.carrito = query
+    },
+    set_cantidad_carrito(state, query){
+        state.cantidad_carrito = query
     }
   },
   actions: {
@@ -273,10 +278,37 @@ export default new Vuex.Store({
           // FUNCION PARA AGREGAR EL LOADING CUAND DE DESCARGAN LOS DATOS EN LOCAL
 
     },
-      wse({}, modulo){ // PASO 1: recibe el wse del modulo por ejemplo medicos al guardar, recibe los datos de ruta (ver en estate)
+    wse({}, modulo){ // PASO 1: recibe el wse del modulo por ejemplo medicos al guardar, recibe los datos de ruta (ver en estate)
 
         const { enviar } = require('@/config/sockets_config')
         enviar(modulo) // PASO 2: se pasan los datos de la ruta a la funcion enviar para que lo emita al servidor
+    },
+    sumarCompra({commit, state}, data){
+
+        let numero = state.carrito[data].cantx
+
+        numero += 1
+
+        let newnumero = state.carrito[data].cantx = numero
+
+        commit('set_cantidad_carrito', newnumero)
+    },
+    restarCompra({commit, state}, data){
+
+        if(state.carrito[data].cantx <= 1){
+            
+        }else{
+
+            let numero = state.carrito[data].cantx
+    
+            numero -= 1
+    
+            let newnumero = state.carrito[data].cantx = numero
+            commit('set_cantidad_carrito', newnumero)
+
+        }
+
+
     },
     
     },
