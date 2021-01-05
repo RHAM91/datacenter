@@ -1,6 +1,5 @@
 <template>
-
-     <div>
+    <div>
         <div class="barra" id="navb">
             <div class="menu" @click="AbrirMenu" v-if="icono">
                 <i class="far fa-arrow-alt-circle-left"></i>
@@ -17,23 +16,25 @@
             <b-container fluid>
                 <b-row>
                     <b-col sm="12">
-                        <h1>Ordenes de compra</h1>
+                        <h1>Configuración</h1>
                     </b-col>
                     <b-col sm="12">
                         <b-tabs content-class="mt-3">
                             
-                            <b-tab v-if="permisos.pacientes.listar" title="Carrito" @click="setSubModulo('carrito')"></b-tab>
-                            <b-tab v-if="permisos.pacientes.listar" title="Ordenes" @click="setSubModulo('ordenes')"></b-tab>
+                            <b-tab v-if="permisos.pacientes.listar" title="Correos origen" @click="setSubModulo('correosorigen')"></b-tab>
+                            <b-tab v-if="permisos.pacientes.listar" title="Correos destino" @click="setSubModulo('correosdestino')"></b-tab>
                         </b-tabs>
                     </b-col>
 
-                    <b-col sm="12" v-if="submodulo == 'carrito'">
-                        <Carrito />
+                    <b-col sm="12" v-if="submodulo == 'correosorigen'">
+                        <CorreosOrigen />
                     </b-col>
 
-                    <b-col sm="12" v-if="submodulo == 'ordenes'">
-                        <Ordenes />
+                    <b-col sm="12" v-if="submodulo == 'correosdestino'">
+                        <CorreosDestino />
                     </b-col>
+
+                    
 
                 </b-row>
             </b-container>
@@ -44,8 +45,8 @@
 
 <script>
 
-import Carrito from '@/components/OrdenesDeCompra/Carrito.vue'
-import Ordenes from '@/components/OrdenesDeCompra/Ordenes.vue'
+import CorreosOrigen from '@/components/Configuracion/CorreosOrigen.vue'
+import CorreosDestino from '@/components/Configuracion/CorreosDestino.vue'
 
 //--> GIF ANIMADO PARA LAS DESCARGAS
 
@@ -58,14 +59,14 @@ import { mapState } from 'vuex'
 export default {
     name: "Template",
     components:{
-        Ordenes,
-        Carrito,
+        CorreosOrigen,
+        CorreosDestino,
         Loading
     },
     data() {
         return {
             icono: true,
-            submodulo: 'carrito',
+            submodulo: 'correosorigen',
         }
     },
     computed: {
@@ -86,7 +87,7 @@ export default {
 </script>
 
 <style scope>
-    .menu{
+    /* .menu{
         width: 48px;
         height: 48px;
         display: flex;
@@ -109,7 +110,7 @@ export default {
     .box{
         padding: 10px;
         box-sizing: border-box;
-    }
+    } */
 
    
 </style>

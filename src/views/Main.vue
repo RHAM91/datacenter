@@ -30,6 +30,10 @@
                     <OrdenCompraTabs v-on:OpenMenu="ToggleMenu"/>
                 </div>
 
+                <div v-if="modulo == 'configuracion'">
+                    <ConfiguracionTabs v-on:OpenMenu="ToggleMenu"/>
+                </div>
+
             </div> 
 
         </div>
@@ -49,6 +53,7 @@ import InventarioTabs from '@/components/Inventarios/Tabs.vue'
 import ReporteTabsKardex from '@/components/Reportes/Kardex/Tabs.vue'
 import PedidosTabs from '@/components/Pedidos/Tabs.vue'
 import OrdenCompraTabs from '@/components/OrdenesDeCompra/Tabs.vue'
+import ConfiguracionTabs from '@/components/Configuracion/Tabs.vue'
 
 
 //--> GIF ANIMADO PARA LAS DESCARGAS
@@ -71,6 +76,7 @@ export default {
         InventarioTabs,
         ReporteTabsKardex,
         PedidosTabs,
+        ConfiguracionTabs,
         OrdenCompraTabs
     },
     data(){
