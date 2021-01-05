@@ -30,7 +30,7 @@
                             <td>
                                 {{item.nombre}}
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align:center;">
                                 {{item.bodega}}
                             </td>
                             <td>
