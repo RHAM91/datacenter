@@ -1,11 +1,11 @@
 <template>
     <b-container fluid>
         <b-row>
-            <b-col sm="12" class="mt-2">
+            <b-col sm="5" class="mt-3">
                 <label>Nombre</label>
                 <b-form-input type="text" size="sm" placeholder="Ej. Romario Torres"></b-form-input>
             </b-col>
-            <b-col sm="11" class="mt-3">
+            <b-col sm="6" class="mt-3">
                 <label>Correo</label>
                 <b-form-input type="email" size="sm" placeholder="@"></b-form-input>
             </b-col>
@@ -13,7 +13,7 @@
                 <b-button type="button" size="sm" variant="success"><i class="fas fa-save"></i></b-button>
             </b-col>
 
-            <b-col sm="12" class="mt-5">
+            <b-col sm="12" class="mt-4">
                 <table class="table table-sm table-bordered table-hover"  style="font-size: 12px;">
                     <thead>
                         <tr>
