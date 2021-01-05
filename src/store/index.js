@@ -15,7 +15,8 @@ const vuexPersist = new VuexPersist({
 
     token: state.token,
     permisos: state.permisos,
-    t2: state.t2
+    t2: state.t2,
+    carrito: state.carrito
     //instituciones: state.instituciones
   }) 
 })

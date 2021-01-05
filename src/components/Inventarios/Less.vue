@@ -7,7 +7,7 @@
                         <h2>
                             Consulta de productos con poco stock 
                         </h2>
-                        <b-button type="button" size="sm" variant="danger" @click="remarcar">ok</b-button>
+                        <!-- <b-button type="button" size="sm" variant="danger" @click="remarcar">ok</b-button> -->
                     </b-col>
                     <b-col sm="12" md="5" class="mt-3">
                         <label>Menor a</label>
@@ -32,11 +32,14 @@
                                         <th style="width: 25%;">
                                             Código
                                         </th>
-                                        <th style="width: 65%;">
+                                        <th style="width: 55%;">
                                             Nombre
                                         </th>
                                         <th style="width: 10%;text-align: center;">
                                             Iglesia
+                                        </th>
+                                        <th style="width: 10%;text-align: center;">
+                                            Carrito
                                         </th>
                                     </tr>
                                 </thead>
@@ -48,8 +51,15 @@
                                         <td>
                                             {{item.nombre}}
                                         </td>
+                                        
                                         <td :class="[item.existencia_iglesia == 0 ? '_rojo': item.existencia_iglesia == 1 ? '_anaranjado': item.existencia_iglesia == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_iglesia}}
+                                        </td>
+
+                                        <td style="text-align: center;">
+                                            <b-button v-if="item.marca == false" type="button" size="sm" variant="primary" @click="marca({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_iglesia, pos: index, marca: true}, 'iglesia')"><i class="fas fa-cart-plus"></i></b-button>
+
+                                            <b-button v-else type="button" size="sm" variant="danger" @click="desmarcar({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_iglesia, pos: index, marca: false}, 'iglesia')"><i class="fas fa-minus-circle"></i></b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -86,10 +96,11 @@
                                         <td :class="[item.existencia_oficina == 0 ? '_rojo': item.existencia_oficina == 1 ? '_anaranjado': item.existencia_oficina == 2 ? '_amarillo': '']" style="text-align: center;">
                                             {{item.existencia_oficina}}
                                         </td>
-                                        <td style="text-align: center;">
-                                            <b-button v-if="item.marca == false" type="button" size="sm" variant="primary" @click="marca({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_oficina, pos: index, marca: true})"><i class="fas fa-cart-plus"></i></b-button>
 
-                                            <b-button v-else type="button" size="sm" variant="danger" @click="marca({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_oficina, pos: index, marca: false})">{{index}}</b-button>
+                                        <td style="text-align: center;">
+                                            <b-button v-if="item.marca == false" type="button" size="sm" variant="primary" @click="marca({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_oficina, pos: index, marca: true},'oficina')"><i class="fas fa-cart-plus"></i></b-button>
+
+                                            <b-button v-else type="button" size="sm" variant="danger" @click="desmarcar({codigo: item.codigo, nombre: item.nombre, cantidad: item.existencia_oficina, pos: index, marca: false}, 'oficina')"><i class="fas fa-minus-circle"></i></b-button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -153,6 +164,14 @@ export default {
         
                     let datosIglesia = await axios.post(`http://${IP}:${PUERTO}/api/productos/less`, data, this.$store.state.token)
                     this.dataIglesia = datosIglesia.data
+
+                    let dig = datosIglesia.data
+
+                    dig.forEach(e => {
+                        e.marca = false
+                    });
+
+                    await this.remarcar('iglesia')
                 }else{
     
                     let data = {
@@ -169,40 +188,140 @@ export default {
                         e.marca = false
                     });
 
+                    await this.remarcar('oficina')
+
                 }
             }
         },
-        marca(producto){
-            let data = {
-                codigo: producto.codigo,
-                nombre: producto.nombre,
-                existencia_oficina: producto.cantidad,
-                marca: producto.marca
+        marca(producto, bodega){
+
+            if (bodega == 'iglesia') {
+                let data = {
+                    codigo: producto.codigo,
+                    nombre: producto.nombre,
+                    existencia_iglesia: producto.cantidad,
+                    marca: producto.marca
+                }
+
+                this.dataIglesia.splice(producto.pos, 1, data)
+
+                this.carrito2.push(data)
+                
+                this.set_carrito(this.carrito2)
+
+            }else if (bodega == 'oficina'){
+
+                let data = {
+                    codigo: producto.codigo,
+                    nombre: producto.nombre,
+                    existencia_oficina: producto.cantidad,
+                    marca: producto.marca
+                }
+    
+                this.dataOficina.splice(producto.pos, 1, data)
+    
+                this.carrito2.push(data)
+                
+                this.set_carrito(this.carrito2)
             }
 
-            this.dataOficina.splice(producto.pos, 1, data)
+        },
+        desmarcar(producto, bodega){
 
-            if (producto.marca) {
-                this.carrito2.push(data)
-                this.set_carrito(this.carrito2)
-            }else{
+            if (bodega == 'iglesia') {
+
+                let data = {
+                    codigo: producto.codigo,
+                    nombre: producto.nombre,
+                    existencia_iglesia: producto.cantidad,
+                    marca: producto.marca
+                }
+
+                this.dataIglesia.splice(producto.pos, 1, data)
+
                 for (let i = 0; i < this.carrito2.length; i++) {
                     const e = this.carrito2[i];
+
                     if (e.codigo == producto.codigo) {
                         this.carrito2.splice(i,1)
                     }
                 }
-                
+
                 this.set_carrito(this.carrito2)
 
+            }else if (bodega == 'oficina'){
+
+                let data = {
+                    codigo: producto.codigo,
+                    nombre: producto.nombre,
+                    existencia_oficina: producto.cantidad,
+                    marca: producto.marca
+                }
+    
+                this.dataOficina.splice(producto.pos, 1, data)
+    
+                for (let i = 0; i < this.carrito2.length; i++) {
+                    const e = this.carrito2[i];
+    
+                    if (e.codigo == producto.codigo) {
+                        this.carrito2.splice(i,1)
+                    }
+                }
+    
+                this.set_carrito(this.carrito2)
             }
+
+
         },
-        remarcar(){
-            for (let i = 0; i < this.carrito.length; i++) {
-                const e = this.carrito[i];
+        remarcar(bodega){
+
+            if (bodega == 'oficina') {
                 
-                this.marca(e)
+                this.carrito2 = this.carrito
+    
+                for (let i = 0; i < this.carrito.length; i++) {
+                    const e = this.carrito[i];
+    
+                    for (let x = 0; x < this.dataOficina.length; x++) {
+                        const m = this.dataOficina[x];
+                        
+                        if (e.codigo == m.codigo) {
+                            let data = {
+                                codigo: e.codigo,
+                                nombre: e.nombre,
+                                existencia_oficina: e.existencia_oficina,
+                                marca: e.marca
+                            }
+    
+                            this.dataOficina.splice(x, 1, data)
+                        }
+                    }
+                }
+            }else if (bodega == 'iglesia'){
+
+                this.carrito2 = this.carrito
+    
+                for (let i = 0; i < this.carrito.length; i++) {
+                    const e = this.carrito[i];
+    
+                    for (let x = 0; x < this.dataIglesia.length; x++) {
+                        const m = this.dataIglesia[x];
+                        
+                        if (e.codigo == m.codigo) {
+                            let data = {
+                                codigo: e.codigo,
+                                nombre: e.nombre,
+                                existencia_iglesia: e.existencia_iglesia,
+                                marca: e.marca
+                            }
+    
+                            this.dataIglesia.splice(x, 1, data)
+                        }
+                    }
+                }
             }
+
+
         },
         ...mapMutations(['set_carrito'])
     },
