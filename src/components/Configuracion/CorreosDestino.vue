@@ -37,8 +37,8 @@
                                 Correo
                             </td>
                             <td style="text-align: center;">
-                                <b-button type="button" size="sm" variant="primary" style="margin-right: 5px;">edit</b-button>
-                                <b-button type="button" size="sm" variant="danger">del</b-button>
+                                <b-button type="button" size="sm" variant="primary" style="margin-right: 5px;"><i class="fas fa-edit"></i></b-button>
+                                <b-button type="button" size="sm" variant="danger"><i class="fas fa-trash-alt"></i></b-button>
                             </td>
                         </tr>
                     </tbody>

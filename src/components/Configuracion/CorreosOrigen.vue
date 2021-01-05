@@ -1,16 +1,17 @@
 <template>
     <b-container fluid>
+        <form @submit.prevent="guardar">
         <b-row>
             <b-col sm="5" class="mt-3">
                 <label>Nombre</label>
-                <b-form-input type="text" size="sm" placeholder="Ej. Romario Torres"></b-form-input>
+                <b-form-input type="text" size="sm" v-model="nombre" placeholder="Ej. Romario Torres"></b-form-input>
             </b-col>
             <b-col sm="6" class="mt-3">
                 <label>Correo</label>
-                <b-form-input type="email" size="sm" placeholder="@"></b-form-input>
+                <b-form-input type="email" v-model="correo" size="sm" placeholder="@"></b-form-input>
             </b-col>
             <b-col sm="1" class="mt-5">
-                <b-button type="button" size="sm" variant="success"><i class="fas fa-save"></i></b-button>
+                <b-button type="submit" size="sm" variant="success"><i class="fas fa-save"></i></b-button>
             </b-col>
 
             <b-col sm="12" class="mt-4">
@@ -29,28 +30,58 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-for="(item, index) in inventario_correos" :key="index">
                             <td>
-                                Romario Torres
+                                {{item.nombre}}
                             </td>
                             <td>
-                                Correo
+                                {{item.correo}}
                             </td>
                             <td style="text-align: center;">
-                                <b-button type="button" size="sm" variant="primary" style="margin-right: 5px;">edit</b-button>
-                                <b-button type="button" size="sm" variant="danger">del</b-button>
+                                <b-button type="button" size="sm" variant="primary" style="margin-right: 5px;"><i class="fas fa-edit"></i></b-button>
+                                <b-button type="button" size="sm" variant="danger"><i class="fas fa-trash-alt"></i></b-button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </b-col>
         </b-row>
+        </form>
     </b-container>
 </template>
 
 <script>
-export default {
+import {IP, PUERTO} from '@/config/parametros'
+import axios from 'axios'
+import { mapActions, mapState } from 'vuex'
 
+export default {
+    name: 'CorreosOrigen',
+    computed:{
+        ...mapState(['inventario_correos'])
+    },
+    data() {
+        return {
+            nombre: '',
+            correo: ''
+        }
+    },
+    methods: {
+        async guardar(){
+            let data = {
+                api: 'correos',
+                formulario: {
+                    nombre: this.nombre,
+                    correo: this.correo,
+                    funcion: 'origen',
+                }
+            }
+
+            await this.insert_data(data)
+            await this.wse(this.$store.state.rutas.inventario_correos_origen)
+        },
+        ...mapActions(['insert_data', 'wse'])
+    },
 }
 </script>
 
