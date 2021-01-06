@@ -49,7 +49,7 @@
         <Less v-if="modal_less" v-on:clsModal="cerrarModal_less" />
         <OrdenCompra v-if="modal_ordencompra" v-on:ocmodal="cerrarModal_oc" />
 
-        <div class="btn_flotante_enviar" @click="abriModal_enviar">
+        <div v-if="carrito.length != 0" class="btn_flotante_enviar" @click="abriModal_enviar">
             <i class="fas fa-paper-plane"></i>
         </div>
 

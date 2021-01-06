@@ -5,33 +5,47 @@
 
             </div>
             <b-container fluid>
-                <b-row>
-                    <b-col sm="12" class="mt-3">
-                        <label>Origen</label>
-                        <select class="form-control form-control-sm" v-model="origen">
-                            <option value="">Selecciona</option>
-                            <option v-for="(item, index) in inventario_correos" :key="index" :value="item.correo">{{item.correo}}</option>
-                        </select>
-                    </b-col>
-                    <b-col sm="12" class="mt-3">
-                        <label>Destino</label>
-                        <select class="form-control form-control-sm" v-model="destino">
-                            <option value="">Selecciona</option>
-                            <option value="correo">correo@correo.com</option>
-                        </select>
-                    </b-col>
-                    <b-col sm="12" class="mt-3">
-                        <label>Generar PDF?</label>
-                        <select class="form-control form-control-sm" v-model="pdf">
-                            <option value="no">No</option>
-                            <option value="si">Si</option>
-                        </select>
-                    </b-col>
+                <form @submit.prevent="guardarOrden">
+                    <b-row>
+                        <b-col sm="12" md="6" class="mt-3">
+                            <label>Origen</label>
+                            <select class="form-control form-control-sm" v-model="origen">
+                                <option value="">Selecciona</option>
+                                <option v-for="(item, index) in inventario_correos" :key="index" :value="item.correo">{{item.nombre}}</option>
+                            </select>
+                        </b-col>
+                        <b-col sm="12" md="6" class="mt-3">
+                            <label>Destino</label>
+                            <select class="form-control form-control-sm" v-model="destino">
+                                <option value="">Selecciona</option>
+                                <option value="correo">correo@correo.com</option>
+                            </select>
+                        </b-col>
+                        
+                        <b-col sm="12" class="mt-3">
+                            <label>Generar PDF?</label>
+                            <select class="form-control form-control-sm" v-model="pdf">
+                                <option value="no">No</option>
+                                <option value="si">Si</option>
+                            </select>
+                        </b-col>
 
-                    <b-col sm="12" class="mt-3 d-flex flex-row-reverse">
-                        <b-button type="button" size="sm" variant="success" @click="guardarOrden">Enviar</b-button>
-                    </b-col>
-                </b-row>
+                        <b-col sm="12" class="mt-3">
+                            <label>Justificación</label>
+                            <b-form-textarea
+                                v-model="comentarios"
+                                placeholder="Escribe algo..."
+                                rows="3"
+                                max-rows="6"
+                                required
+                            ></b-form-textarea>
+                        </b-col>
+
+                        <b-col sm="12" class="mt-3 d-flex flex-row-reverse">
+                            <b-button type="submit" size="sm" variant="success">Enviar</b-button>
+                        </b-col>
+                    </b-row>
+                </form>
             </b-container>
         </div>
     </div>
@@ -49,7 +63,8 @@ export default {
         return {
             origen: '',
             destino: '',
-            pdf: 'no'
+            pdf: 'no',
+            comentarios: ''
         }
     },
     created() {
@@ -73,7 +88,8 @@ export default {
                 api: 'ordenes',
                 formulario: {
                     fecha: moment(Date.now()).format('YYYY-MM-DD'),
-                    detalle: JSON.stringify(this.carrito)
+                    detalle: JSON.stringify(this.carrito),
+                    comentarios: this.comentarios
                 }
             }
 
@@ -83,6 +99,7 @@ export default {
             let cart = []
 
             this.set_carrito(cart)
+            this.salir()
 
         },
         ...mapMutations(['set_carrito']),
@@ -106,7 +123,7 @@ export default {
     }
         .cuadro_orden_compra{
             width: 700px;
-            height: 350px;
+            height: 390px;
             background-color: white;
         }
             .cuadro_orden_banner{

@@ -5,16 +5,16 @@
                 <table class="table table-sm table-bordered table-hover" style="font-size: 12px;">
                     <thead>
                         <tr>
-                            <td>
+                            <td style="width: 40%;">
                                 No. Orden
                             </td>
-                            <td>
+                            <td style="width: 20%;text-align: center;">
                                 Estado
                             </td>
-                            <td>
+                            <td style="width: 20%;text-align: center;">
                                 Fecha
                             </td>
-                            <td>
+                            <td style="width: 20%;text-align: center;">
                                 ...
                             </td>
                         </tr>
@@ -24,27 +24,37 @@
                             <td>
                                 {{item._id}}
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 {{item.aprobada}}
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 {{item.fecha}}
                             </td>
-                            <td>
-
+                            <td style="text-align: center;">
+                                <b-button type="button" variant="primary" size="sm" style="margin-right: 5px;" @click="abrirModaldetalle(item._id)"><i class="fas fa-info-circle"></i></b-button>
+                                <b-button type="button" variant="danger" size="sm" @click="borrarOrden(item._id)"><i class="fas fa-trash"></i></b-button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </b-col>
         </b-row>
+
+        <DetalleOrden v-if="modal_detalle_compra" v-on:cerrarModalDet="closeModalDetalle" :idproducto="id" />
+
     </b-container>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import {pregunta} from '@/components/functions/alertas'
+import DetalleOrden from './ModalDetalleOrdenCompra.vue'
+
 export default {
     name: 'Ordenes',
+    components:{
+        DetalleOrden
+    },
     filters:{
         aprobado: function(val){
             if(val == ''){
@@ -59,11 +69,34 @@ export default {
     },
     data() {
         return {
-            
+            modal_detalle_compra: false,
+            id: ''
         }
     },
     methods: {
-        
+        abrirModaldetalle(idp){
+            this.modal_detalle_compra = true
+            this.id = idp
+        },
+        closeModalDetalle(){
+            this.modal_detalle_compra = false
+        },
+        async borrarOrden(id){
+
+            pregunta({titulo: 'Seguro que deseas borrarlo?', texto: 'Esta acción no se puede revertir', afirmacion: 'Si, borrarlo!'}, async (i) =>{
+
+                if (i) {
+                    let data = {
+                        api: 'ordenes',
+                        id
+                    }
+
+                    await this.deleteData(data)
+                    await this.wse(this.$store.state.rutas.inventario_ordenes)
+                }
+            })
+        },
+        ...mapActions(['deleteData', 'wse'])
     },
 }
 </script>
