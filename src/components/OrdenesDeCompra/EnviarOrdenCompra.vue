@@ -1,17 +1,55 @@
 <template>
     <div class="contenedor_orden_compra">
         <div class="cuadro_orden_compra">
+            <div class="cuadro_orden_banner">
 
+            </div>
+            <b-container fluid>
+                <b-row>
+                    <b-col sm="12" class="mt-3">
+                        <label>Origen</label>
+                        <select class="form-control form-control-sm" v-model="origen">
+                            <option value="">Selecciona</option>
+                            <option v-for="(item, index) in inventario_correos" :key="index" :value="item.correo">{{item.correo}}</option>
+                        </select>
+                    </b-col>
+                    <b-col sm="12" class="mt-3">
+                        <label>Destino</label>
+                        <select class="form-control form-control-sm" v-model="destino">
+                            <option value="">Selecciona</option>
+                            <option value="correo">correo@correo.com</option>
+                        </select>
+                    </b-col>
+                    <b-col sm="12" class="mt-3">
+                        <label>Generar PDF?</label>
+                        <select class="form-control form-control-sm" v-model="pdf">
+                            <option value="no">No</option>
+                            <option value="si">Si</option>
+                        </select>
+                    </b-col>
+
+                    <b-col sm="12" class="mt-3 d-flex flex-row-reverse">
+                        <b-button type="button" size="sm" variant="success" @click="guardarOrden">Enviar</b-button>
+                    </b-col>
+                </b-row>
+            </b-container>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex'
+import moment from 'moment'
 export default {
     name: 'OrdenCompra',
+    computed:{
+        ...mapState(['inventario_correos', 'carrito'])
+    },
     data() {
         return {
-            
+            origen: '',
+            destino: '',
+            pdf: 'no'
         }
     },
     created() {
@@ -29,6 +67,26 @@ export default {
                 this.salir()
             }
         },
+        async guardarOrden(){
+
+            let data = {
+                api: 'ordenes',
+                formulario: {
+                    fecha: moment(Date.now()).format('YYYY-MM-DD'),
+                    detalle: JSON.stringify(this.carrito)
+                }
+            }
+
+            await this.insert_data(data)
+            await this.wse(this.$store.state.rutas.inventario_ordenes)
+
+            let cart = []
+
+            this.set_carrito(cart)
+
+        },
+        ...mapMutations(['set_carrito']),
+        ...mapActions(['insert_data', 'wse'])
     },
 }
 </script>
@@ -48,8 +106,12 @@ export default {
     }
         .cuadro_orden_compra{
             width: 700px;
-            height: 600px;
+            height: 350px;
             background-color: white;
-            border-radius: 4px;
         }
+            .cuadro_orden_banner{
+                width: 100%;
+                height: 35px;
+                border-bottom: 1px solid #ebebeb;
+            }
 </style>
