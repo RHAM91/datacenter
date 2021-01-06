@@ -39,7 +39,7 @@
                             </td>
                             <td style="text-align: center;">
                                 <b-button type="button" size="sm" variant="primary" style="margin-right: 5px;"><i class="fas fa-edit"></i></b-button>
-                                <b-button type="button" size="sm" variant="danger"><i class="fas fa-trash-alt"></i></b-button>
+                                <b-button type="button" size="sm" variant="danger" @click="borrar(item._id)"><i class="fas fa-trash-alt"></i></b-button>
                             </td>
                         </tr>
                     </tbody>
@@ -78,9 +78,25 @@ export default {
             }
 
             await this.insert_data(data)
-            await this.wse(this.$store.state.rutas.inventario_correos_origen)
+            await this.wse(this.$store.state.rutas.inventario_correos)
+
+            this.nombre = ''
+            this.correo = ''
         },
-        ...mapActions(['insert_data', 'wse'])
+        async borrar(id){
+            let data = {
+                api: 'correos',
+                id
+            }
+
+            await this.deleteData(data)
+            await this.wse(this.$store.state.rutas.inventario_correos)
+
+        },
+        modalEdicion(){
+            // pendiente
+        },
+        ...mapActions(['insert_data', 'deleteData', 'wse'])
     },
 }
 </script>
