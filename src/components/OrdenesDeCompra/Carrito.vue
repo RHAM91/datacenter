@@ -55,7 +55,7 @@
                                 <b-form-input :id="`precio_elemento_${index}`" type="number" step="0.01" size="sm" placeholder="Q" @keyup="setPrecio(index)"></b-form-input>
                             </td>
                             <td style="text-align:center;">
-                                {{item.subtotal}}
+                                Q{{item.subtotal}}
                             </td>
                             <td style="text-align: center;">
                                 <b-button type="button" size="sm" variant="success" style="margin-right: 5px;" @click="sumar(index)"><i class="fas fa-plus"></i></b-button>
@@ -66,11 +66,6 @@
                 </table>
             </b-col>
         </b-row>
-
-        <pre>
-            {{carrito}}
-        </pre>
-
 
         <Less v-if="modal_less" v-on:clsModal="cerrarModal_less" />
         <OrdenCompra v-if="modal_ordencompra" v-on:ocmodal="cerrarModal_oc" />

@@ -5,16 +5,19 @@
                 <table class="table table-sm table-bordered table-hover" style="font-size: 12px;">
                     <thead>
                         <tr>
-                            <td style="width: 40%;">
+                            <td style="width: 20%;">
                                 No. Orden
                             </td>
-                            <td style="width: 20%;text-align: center;">
+                            <td style="width: 45%;">
+                                Razón
+                            </td>
+                            <td style="width: 10%;text-align: center;">
                                 Estado
                             </td>
-                            <td style="width: 20%;text-align: center;">
+                            <td style="width: 10%;text-align: center;">
                                 Fecha
                             </td>
-                            <td style="width: 20%;text-align: center;">
+                            <td style="width: 15%;text-align: center;">
                                 ...
                             </td>
                         </tr>
@@ -23,6 +26,9 @@
                         <tr v-for="(item, index) in inventario_ordenes" :key="index">
                             <td>
                                 {{item._id}}
+                            </td>
+                            <td>
+                                {{item.comentarios}}
                             </td>
                             <td style="text-align: center;">
                                 {{item.aprobada}}
