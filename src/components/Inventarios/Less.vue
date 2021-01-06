@@ -202,7 +202,10 @@ export default {
                     existencia_iglesia: producto.cantidad,
                     marca: producto.marca,
                     bodega,
-                    cantx: 1
+                    cantx: 1,
+                    proveedor: '',
+                    precio: 0,
+                    subtotal: 0
                 }
 
                 this.dataIglesia.splice(producto.pos, 1, data)
@@ -219,7 +222,10 @@ export default {
                     existencia_oficina: producto.cantidad,
                     marca: producto.marca,
                     bodega,
-                    cantx: 1
+                    cantx: 1,
+                    proveedor: '',
+                    precio: 0,
+                    subtotal: 0
                 }
     
                 this.dataOficina.splice(producto.pos, 1, data)
@@ -240,7 +246,10 @@ export default {
                     existencia_iglesia: producto.cantidad,
                     marca: producto.marca,
                     bodega,
-                    cantx: 1
+                    cantx: 1,
+                    proveedor: '',
+                    precio: 0,
+                    subtotal: 0
                 }
 
                 this.dataIglesia.splice(producto.pos, 1, data)
@@ -263,7 +272,10 @@ export default {
                     existencia_oficina: producto.cantidad,
                     marca: producto.marca,
                     bodega,
-                    cantx: 1
+                    cantx: 1,
+                    proveedor: '',
+                    precio: 0,
+                    subtotal: 0
                 }
     
                 this.dataOficina.splice(producto.pos, 1, data)
@@ -299,7 +311,10 @@ export default {
                                 nombre: e.nombre,
                                 existencia_oficina: e.existencia_oficina,
                                 marca: e.marca,
-                                cantx: e.cantx
+                                cantx: e.cantx,
+                                proveedor: e.proveedor,
+                                precio: e.precio,
+                                subtotal: e.subtotal
                             }
     
                             this.dataOficina.splice(x, 1, data)
@@ -322,7 +337,10 @@ export default {
                                 nombre: e.nombre,
                                 existencia_iglesia: e.existencia_iglesia,
                                 marca: e.marca,
-                                cantx: e.cantx
+                                cantx: e.cantx,
+                                proveedor: e.proveedor,
+                                precio: e.precio,
+                                subtotal: e.subtotal
                             }
     
                             this.dataIglesia.splice(x, 1, data)

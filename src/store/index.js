@@ -147,6 +147,15 @@ export default new Vuex.Store({
     },
     set_cantidad_carrito(state, query){
         state.cantidad_carrito = query
+    },
+    set_proveedor_lista(state, query){
+        state.carrito[query.index].proveedor = query.proveedor
+    },
+    set_precio_lista(state, query){
+        state.carrito[query.index].precio = query.precio
+    },
+    set_subtotal_lista(state, query){
+        state.carrito[query.index].subtotal = query.subtotal
     }
   },
   actions: {
@@ -296,12 +305,20 @@ export default new Vuex.Store({
     sumarCompra({commit, state}, data){
 
         let numero = state.carrito[data].cantx
+        let precio = state.carrito[data].precio
 
         numero += 1
 
         let newnumero = state.carrito[data].cantx = numero
 
         commit('set_cantidad_carrito', newnumero)
+
+        let subtotal = {
+            index: data,
+            subtotal: newnumero * precio
+        }
+        commit('set_subtotal_lista', subtotal)
+
     },
     restarCompra({commit, state}, data){
 
@@ -310,16 +327,41 @@ export default new Vuex.Store({
         }else{
 
             let numero = state.carrito[data].cantx
+            let precio = state.carrito[data].precio
     
             numero -= 1
     
             let newnumero = state.carrito[data].cantx = numero
             commit('set_cantidad_carrito', newnumero)
 
+            let subtotal = {
+                index: data,
+                subtotal: newnumero * precio
+            }
+
+            commit('set_subtotal_lista', subtotal)
+
+        }
+    },
+    setProveedorLista({commit, state}, datos){
+
+        //state.carrito[datos.index].proveedor = datos.proveedor
+        commit('set_proveedor_lista', datos)
+    },
+    setPrecioLista({commit, state}, datos){
+
+        let cantidad = state.carrito[datos.index].cantx
+
+        commit('set_precio_lista', datos)
+
+        let subtotal = parseFloat(datos.precio) * parseFloat(cantidad)
+        let ninfo = {
+            index: datos.index,
+            subtotal
         }
 
-
-    },
+        commit('set_subtotal_lista', ninfo)
+    }
     
     },
     getters:{

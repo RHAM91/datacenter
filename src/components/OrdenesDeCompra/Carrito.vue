@@ -5,10 +5,10 @@
                 <table class="table table-sm table-bordered table-hover" style="font-size: 12px;">
                     <thead>
                         <tr>
-                            <th style="width: 25%;">
+                            <th style="width: 10%;">
                                 Código
                             </th>
-                            <th style="width: 45%;">
+                            <th style="width: 25%;">
                                 Nombre
                             </th>
                             <th style="width: 10%;text-align: center;">
@@ -16,6 +16,15 @@
                             </th>
                             <th style="width: 10%;text-align: center;">
                                 Cantidad
+                            </th>
+                            <th style="width: 15%;text-align: center;">
+                                Proveedor
+                            </th>
+                            <th style="width: 10%;text-align: center;">
+                                Precio
+                            </th>
+                             <th style="width: 10%;text-align: center;">
+                                Subtotal
                             </th>
                             <th style="width: 10%;text-align: center;">
                                 ...
@@ -36,6 +45,18 @@
                             <td style="text-align: center;">
                                 {{item.cantx}}
                             </td>
+                            <td style="text-align:center;">
+                                <select :id="[`select_proveedor_${index}`]" class="form-control form-control-sm" @change="selectProveedor(index)">
+                                    <option value="">Selecciona</option>
+                                    <option v-for="(item, index) in inventario_proveedores" :key="index" :value="item.proveedor">{{item.proveedor}}</option>
+                                </select>
+                            </td>
+                            <td style="text-align:center;">
+                                <b-form-input :id="`precio_elemento_${index}`" type="number" step="0.01" size="sm" placeholder="Q" @keyup="setPrecio(index)"></b-form-input>
+                            </td>
+                            <td style="text-align:center;">
+                                {{item.subtotal}}
+                            </td>
                             <td style="text-align: center;">
                                 <b-button type="button" size="sm" variant="success" style="margin-right: 5px;" @click="sumar(index)"><i class="fas fa-plus"></i></b-button>
                                 <b-button type="button" size="sm" variant="danger"><i class="fas fa-minus" @click="restar(index)"></i></b-button>
@@ -45,6 +66,11 @@
                 </table>
             </b-col>
         </b-row>
+
+        <pre>
+            {{carrito}}
+        </pre>
+
 
         <Less v-if="modal_less" v-on:clsModal="cerrarModal_less" />
         <OrdenCompra v-if="modal_ordencompra" v-on:ocmodal="cerrarModal_oc" />
@@ -71,12 +97,13 @@ export default {
         OrdenCompra
     },
     computed:{
-        ...mapState(['carrito'])
+        ...mapState(['carrito', 'inventario_proveedores'])
     },
     data() {
         return {
             modal_less: false,
-            modal_ordencompra: false
+            modal_ordencompra: false,
+            proveedor_temp: ''
         }
     },
     methods: {
@@ -98,7 +125,39 @@ export default {
         restar(index){
             this.restarCompra(index)
         },
-        ...mapActions(['sumarCompra','restarCompra'])
+        mostrarProveedores(){
+            for (let i = 0; i < this.carrito.length; i++) {
+                const e = this.carrito[i];
+                
+                document.getElementById(`select_proveedor_${i}`).value = e.proveedor
+                document.getElementById(`precio_elemento_${i}`).value = e.precio
+                
+            }
+        },
+        selectProveedor(index){
+            let id_elemento = `select_proveedor_${index}`
+            let row = document.getElementById(id_elemento).value
+            let info = {
+                index,
+                proveedor: row
+            }
+
+            this.setProveedorLista(info)
+        },
+        setPrecio(index){
+            let precio_elemento = document.getElementById(`precio_elemento_${index}`).value
+
+            let info = {
+                index,
+                precio: precio_elemento == '' ? 0: parseFloat(precio_elemento)
+            }
+
+            this.setPrecioLista(info)
+        },
+        ...mapActions(['sumarCompra','restarCompra', 'setProveedorLista', 'setPrecioLista'])
+    },
+    mounted() {
+        this.mostrarProveedores()
     },
 }
 </script>
