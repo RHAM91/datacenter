@@ -53,6 +53,7 @@ export default new Vuex.Store({
     inventario_proveedores:[],
     inventario_pedidos: [],
     inventario_correos: [],
+    inventario_correos_destino: [],
     inventario_ordenes: [],
 
 
@@ -64,7 +65,8 @@ export default new Vuex.Store({
         inventario_ubicaciones: {api: 'ubicaciones', estado: 'set_inventario_ubicaciones'},
         inventario_proveedores: {api: 'proveedores', estado: 'set_inventario_proveedores'},
         inventario_pedidos: {api: 'pedidos', estado: 'set_inventario_pedidos'},
-        inventario_correos: {api: 'correos', estado: 'set_inventario_correos'},
+        inventario_correos: {api: 'correos/tipo/origen', estado: 'set_inventario_correos'},
+        inventario_correos_destino: {api: 'correos/tipo/destino', estado: 'set_inventario_correos_destino'},
         inventario_ordenes: {api: 'ordenes', estado: 'set_inventario_ordenes'}
     },
 
@@ -122,6 +124,9 @@ export default new Vuex.Store({
     },
     set_inventario_correos(state, data){
         state.inventario_correos = data
+    },
+    set_inventario_correos_destino(state, data){
+        state.inventario_correos_destino = data
     },
     set_inventario_ordenes(state, data){
         state.inventario_ordenes = data
@@ -283,6 +288,7 @@ export default new Vuex.Store({
             dispatch('getDatos', state.rutas.inventario_proveedores)
             dispatch('getDatos', state.rutas.inventario_pedidos)
             dispatch('getDatos', state.rutas.inventario_correos)
+            dispatch('getDatos', state.rutas.inventario_correos_destino)
             dispatch('getDatos', state.rutas.inventario_ordenes)
 
             commit('set_loading', true)

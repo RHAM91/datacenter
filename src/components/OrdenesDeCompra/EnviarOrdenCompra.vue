@@ -8,17 +8,17 @@
                 <form @submit.prevent="guardarOrden">
                     <b-row>
                         <b-col sm="12" md="6" class="mt-3">
-                            <label>Origen</label>
+                            <label>Correo de origen</label>
                             <select class="form-control form-control-sm" v-model="origen">
                                 <option value="">Selecciona</option>
-                                <option v-for="(item, index) in inventario_correos" :key="index" :value="item.correo">{{item.nombre}}</option>
+                                <option v-for="(item, index) in inventario_correos" :key="index" :value="item._id">{{item.nombre}}</option>
                             </select>
                         </b-col>
                         <b-col sm="12" md="6" class="mt-3">
-                            <label>Destino</label>
+                            <label>Correo destino</label>
                             <select class="form-control form-control-sm" v-model="destino">
                                 <option value="">Selecciona</option>
-                                <option value="correo">correo@correo.com</option>
+                                <option v-for="(item, index) in inventario_correos_destino" :key="index" :value="item._id">{{item.nombre}}</option>
                             </select>
                         </b-col>
                         
@@ -57,7 +57,7 @@ import moment from 'moment'
 export default {
     name: 'OrdenCompra',
     computed:{
-        ...mapState(['inventario_correos', 'carrito'])
+        ...mapState(['inventario_correos', 'inventario_correos_destino', 'carrito'])
     },
     data() {
         return {
@@ -89,7 +89,10 @@ export default {
                 formulario: {
                     fecha: moment(Date.now()).format('YYYY-MM-DD'),
                     detalle: JSON.stringify(this.carrito),
-                    comentarios: this.comentarios
+                    comentarios: this.comentarios,
+                    pdf: this.pdf,
+                    corigen: this.origen,
+                    cdestino: this.destino
                 }
             }
 

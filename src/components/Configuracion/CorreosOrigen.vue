@@ -2,15 +2,28 @@
     <b-container fluid>
         <form @submit.prevent="guardar">
         <b-row>
-            <b-col sm="5" class="mt-3">
+            <b-col sm="6" class="mt-3">
                 <label>Nombre</label>
-                <b-form-input type="text" size="sm" v-model="nombre" placeholder="Ej. Romario Torres"></b-form-input>
+                <b-form-input type="text" size="sm" v-model="nombre" placeholder="Ej. Romario Torres" required></b-form-input>
             </b-col>
             <b-col sm="6" class="mt-3">
                 <label>Correo</label>
-                <b-form-input type="email" v-model="correo" size="sm" placeholder="@"></b-form-input>
+                <b-form-input type="email" v-model="correo" size="sm" placeholder="@" required></b-form-input>
             </b-col>
-            <b-col sm="1" class="mt-5">
+            <b-col sm="6" md="6" class="mt-3">
+                <label>Contraseña</label>
+                <b-form-input type="text" v-model="pwd" size="sm" placeholder="pwd" required></b-form-input>
+            </b-col>
+            <b-col sm="6" md="5" class="mt-3">
+                <label>Servidor</label>
+                <select class="form-control form-control-sm" v-model="servidor" required>
+                    <option value="">Selecciona</option>
+                    <option value="gmail">Gmail</option>
+                    <option value="vivaldi">Vivaldi</option>
+                    <option value="hotmail">Hotmail</option>
+                </select>
+            </b-col>
+            <b-col sm="1" md="1" class="mt-5">
                 <b-button type="submit" size="sm" variant="success"><i class="fas fa-save"></i></b-button>
             </b-col>
 
@@ -51,8 +64,7 @@
 </template>
 
 <script>
-import {IP, PUERTO} from '@/config/parametros'
-import axios from 'axios'
+
 import { mapActions, mapState } from 'vuex'
 
 export default {
@@ -63,7 +75,9 @@ export default {
     data() {
         return {
             nombre: '',
-            correo: ''
+            correo: '',
+            pwd: '',
+            servidor: ''
         }
     },
     methods: {
@@ -74,6 +88,8 @@ export default {
                     nombre: this.nombre,
                     correo: this.correo,
                     funcion: 'origen',
+                    pwd: this.pwd,
+                    servidor: this.servidor
                 }
             }
 
@@ -82,6 +98,8 @@ export default {
 
             this.nombre = ''
             this.correo = ''
+            this.pwd = ''
+            this.servidor = ''
         },
         async borrar(id){
             let data = {

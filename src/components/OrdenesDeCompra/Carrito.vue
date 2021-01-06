@@ -23,7 +23,7 @@
                             <th style="width: 10%;text-align: center;">
                                 Precio
                             </th>
-                             <th style="width: 10%;text-align: center;">
+                            <th style="width: 10%;text-align: center;">
                                 Subtotal
                             </th>
                             <th style="width: 10%;text-align: center;">
