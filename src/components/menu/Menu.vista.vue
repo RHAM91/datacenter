@@ -37,12 +37,15 @@
                 <div class="link" @click="salir"><i class="fas fa-sign-out-alt"></i>Salir</div>
             </li>
         </ul>
-        <div v-if="update == false" class="version">
-            v{{version}}
+        <div v-if="update == false" class="version" id="version" @click="show = !show">
+            <i class="fas fa-code-branch"></i>
         </div>
         <div v-else class="btn_update" @click="pushversion">
             Actualizar
         </div>
+        <b-popover :show.sync="show" target="version" title="Versión">
+            <strong>{{version}}</strong>
+        </b-popover>
     </div>
 </template>
 
@@ -64,6 +67,7 @@ export default {
     data() {
         return {
             version: '',
+            show: false,
             update: false // debe estar en false
         }
     },
@@ -272,12 +276,27 @@ export default {
     }
 
     .version{
-        color: white;
-        text-align: center;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
         position: absolute;
-        bottom: 2px;
-        left: 4px;
+        bottom: 5px;
+        left: 5px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: .4s ease;
+        cursor: pointer;
     }
+        .version:hover{
+            background-color: white;
+            color: black;
+        }
+
+        .version:active{
+            background-color: orange;
+        }
 
     .btn_update{
         width: 250px;
