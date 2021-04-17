@@ -4,7 +4,6 @@ import { IP, PUERTO } from '../config/parametros'
 import axios from 'axios'
 import VuexPersist from 'vuex-persist'
 import { minix } from '../components/functions/alertas'
-import { stat } from 'fs'
 // import socket from '../config/sockets_config'
 
 Vue.use(Vuex)
