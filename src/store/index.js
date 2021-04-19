@@ -39,9 +39,10 @@ export default new Vuex.Store({
     token: '',
     t2:'',
     loading: false,
+    loading_: false,
     no_formulario: 0, // esta variable sirve para validar si el producto ya existe no borrar los datos del formulario
-
     permisos:[],
+
     carrito: [],
     cantidad_carrito: 0,
     inventarios:[],
@@ -89,6 +90,9 @@ export default new Vuex.Store({
     },
     set_loading(state, data){
         state.loading = data
+    },
+    set_loading_(state, data){
+        state.loading_ = data
     },
     set_t2(state, token){
         state.t2 = token

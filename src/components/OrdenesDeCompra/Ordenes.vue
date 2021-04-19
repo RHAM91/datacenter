@@ -34,7 +34,7 @@
                                 {{item.aprobada}}
                             </td>
                             <td style="text-align: center;">
-                                {{item.fecha}}
+                                {{item.fecha | nfecha}}
                             </td>
                             <td style="text-align: center;">
                                 <b-button type="button" variant="primary" size="sm" style="margin-right: 5px;" @click="abrirModaldetalle(item._id)"><i class="fas fa-info-circle"></i></b-button>
@@ -55,6 +55,7 @@
 import { mapActions, mapState } from 'vuex'
 import {pregunta} from '@/components/functions/alertas'
 import DetalleOrden from './ModalDetalleOrdenCompra.vue'
+import moment from 'moment'
 
 export default {
     name: 'Ordenes',
@@ -68,6 +69,10 @@ export default {
             }else{
                 return 'Pendiente'
             }
+        },
+        nfecha: function(val){
+            let nf = moment(val).format('DD-MM-YYYY')
+            return nf
         }
     },
     computed:{

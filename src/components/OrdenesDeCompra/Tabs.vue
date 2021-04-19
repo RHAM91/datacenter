@@ -24,6 +24,7 @@
                             
                             <b-tab v-if="permisos.pacientes.listar" title="Carrito" @click="setSubModulo('carrito')"></b-tab>
                             <b-tab v-if="permisos.pacientes.listar" title="Ordenes" @click="setSubModulo('ordenes')"></b-tab>
+                            
                         </b-tabs>
                     </b-col>
 

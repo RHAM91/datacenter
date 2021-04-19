@@ -83,6 +83,28 @@
                     </b-col>
                 </b-row>
             </b-container>
+            <div class="botonera">
+                <b-container fluid>
+                    <form @submit.prevent="enviarDocumentacion">
+                        <b-row>
+                            <b-col sm="10" class="mt-3">
+                                <label>Comprobantes</label>
+                                <b-form-file
+                                    v-model="foto"
+                                    placeholder="Elige un archivo o déjalo caer aquí..."
+                                    drop-placeholder="Suelta el archivo aquí..."
+                                    size="sm"
+                                    required
+                                    
+                                ></b-form-file>
+                            </b-col>
+                            <b-col sm="2" class="mt-5">
+                                <b-button type="submit" size="sm" block variant="success"><i class="fas fa-arrow-circle-up" style="margin-right: 10px;"></i>Subir</b-button>
+                            </b-col>
+                        </b-row>
+                    </form>
+                </b-container>
+            </div>
         </div>
     </div>
 </template>
@@ -90,13 +112,20 @@
 <script>
 
 import {IP, PUERTO} from '@/config/parametros'
+import { minix } from '../functions/alertas'
+import Pacman from '@/components/varios/_Loading.vue'
 import axios from 'axios'
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'DetalleOrden',
     props:['idproducto'],
+    components:{
+        Pacman
+    },
     data() {
         return {
+            foto: null,
             detalleOrden: [],
             justificacion: '',
             total: 0
@@ -109,6 +138,9 @@ export default {
         window.removeEventListener('keydown', this.doCommand)
     },
     methods: {
+        limpiar(){
+            this.foto = null
+        },
         cerrar(){
             this.$emit('cerrarModalDet', false)
         },
@@ -129,7 +161,37 @@ export default {
             });
 
             this.total = contador
-        }
+        },
+        async enviarDocumentacion(){
+
+            let formData = new FormData()
+
+            formData.append('image', this.foto)
+            formData.append('id', this.idproducto)
+
+            this.set_loading_(true)
+
+            let upl = await axios.post(`http://${IP}:${PUERTO}/api/ordenes/docs`, formData, this.$store.state.token)
+
+            this.set_loading_(false)
+            
+            if (upl.data == 'e001') {
+                minix({icon: 'error', mensaje: 'Solo archivos .pdf son permitidos', tiempo: 4000})
+                this.set_loading_(false)
+            }else if (upl.data.message == 'OK') {
+                minix({icon: 'success', mensaje: 'Artículo creado correctamente', tiempo: 3000})
+                this.set_loading_(false)
+                this.limpiar()
+            }else if(upl.data.message == 'e002'){
+                minix({icon: 'error', mensaje: 'El archivo no puede ser mayor a 5Mb de tamaño', tiempo: 4000})
+                this.set_loading_(false)
+            }else{
+                minix({icon: 'info', mensaje: upl.data.message, tiempo: 3000})
+                this.set_loading_(false)
+            } 
+
+        },
+        ...mapMutations(['set_loading_'])
     },
     mounted() {
         this.getdetalle()
@@ -142,5 +204,13 @@ export default {
         width: 750px;
         height: 600px;
         background-color: white;
+        position: relative;
     }
+        .botonera{
+            width: 100%;
+            height: 110px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
 </style>
