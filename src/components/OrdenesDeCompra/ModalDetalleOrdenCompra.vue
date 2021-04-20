@@ -83,7 +83,7 @@
                     </b-col>
                 </b-row>
             </b-container>
-            <div class="botonera">
+            <div v-if="!fu" class="botonera">
                 <b-container fluid>
                     <form @submit.prevent="enviarDocumentacion">
                         <b-row>
@@ -105,6 +105,9 @@
                     </form>
                 </b-container>
             </div>
+            <div v-if="fu" class="botonera" style="display:flex;justify-content: center;align-items:center;">
+                <b-button type="button" variant="primary" size="sm" @click="abrirFile"><i class="fas fa-file-download" style="margin-right: 10px;"></i>Descargar archivo</b-button>
+            </div>
         </div>
     </div>
 </template>
@@ -116,6 +119,7 @@ import { minix } from '../functions/alertas'
 import Pacman from '@/components/varios/_Loading.vue'
 import axios from 'axios'
 import { mapMutations } from 'vuex'
+import open from 'open'
 
 export default {
     name: 'DetalleOrden',
@@ -128,7 +132,9 @@ export default {
             foto: null,
             detalleOrden: [],
             justificacion: '',
-            total: 0
+            total: 0,
+            fu: false,
+            archivo: ''
         }
     },
     created() {
@@ -153,6 +159,8 @@ export default {
             let datos = await axios.get(`http://${IP}:${PUERTO}/api/ordenes/${this.idproducto}`, this.$store.state.token)
             this.detalleOrden = JSON.parse(datos.data.detalle)
             this.justificacion = datos.data.comentarios
+            this.fu = datos.data.fu
+            this.archivo = datos.data.archivo
 
             let contador = 0
 
@@ -182,6 +190,7 @@ export default {
                 minix({icon: 'success', mensaje: 'Artículo creado correctamente', tiempo: 3000})
                 this.set_loading_(false)
                 this.limpiar()
+                this.fu = true
             }else if(upl.data.message == 'e002'){
                 minix({icon: 'error', mensaje: 'El archivo no puede ser mayor a 5Mb de tamaño', tiempo: 4000})
                 this.set_loading_(false)
@@ -190,6 +199,9 @@ export default {
                 this.set_loading_(false)
             } 
 
+        },
+        async abrirFile(){
+            await open(this.archivo)
         },
         ...mapMutations(['set_loading_'])
     },
